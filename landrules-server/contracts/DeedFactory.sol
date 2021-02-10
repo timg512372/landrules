@@ -27,6 +27,11 @@ contract DeedFactory is AccessControl {
 
     mapping(uint256 => address) internal _balances;
     mapping(address => uint256) internal ownerTokenCount;
+
+    //mapping of user address to Deed
+    mapping(address => Deed) internal userDeeds;
+    //mapping of deedID to user address
+    mapping(uint256 => address) internal _users;
     
     bytes32 public constant ADMINS = keccak256('ADMINS');
     
@@ -85,17 +90,26 @@ contract DeedFactory is AccessControl {
     }
 
     // Make a new deed
-    // function newDeed(string calldata _name, string calldata _jsonHash, string calldata _coordinates) external {
-        
-    // }
+     function newDeed(string calldata _name, string calldata _jsonHash, string calldata _coordinates) external {
+            //where to get deed ID? 
+            //what to do with name
+            //not sure what balances and ownerTokenCount do, but we should have a mapping of deedID to address
+            Deed newDeed = Deed(123, '', 'P', '', _jsonHash, _coordinates);
+            deedArray.push(newDeed);
+            uint256 id = deedArray.length - 1;
+            balances[id][msg.sender] = 1;
+            userDeeds[msg.sender] = newDeed;
+            _users[newDeed.deedId] = msg.sender;
+     }
     
     // Tranfer a deed from one person to another
-    // function transferDeed(uint _deedId, address _newOwner) external ownsDeed(_deedId) {
+     //function transferDeed(uint _deedId, address _newOwner) external ownsDeed(_deedId) {
         
     // }
     
     // For admins to set the status of a deed
-    // function setStatus(string calldata _status, uint _deedId) onlyAdmins {
-        
-    // }
+    function setStatus(string calldata _status, uint _deedId) onlyAdmins {
+        deed = deedArray[deedId];
+        deed.status = _status;
+     }
 }
