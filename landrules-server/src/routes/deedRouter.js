@@ -7,7 +7,7 @@ router.get('/', async (req, res) => {
     let deeds = [];
 
     try {
-        usageProfiles = await Deeds.find();
+        deeds = await Deeds.find();
     } catch (e) {
         console.log(e);
         return res.status(500).send(e.message);
@@ -15,7 +15,7 @@ router.get('/', async (req, res) => {
 
     return res.status(200).json({
         success: true,
-        usageProfiles,
+        deeds,
     });
 });
 
