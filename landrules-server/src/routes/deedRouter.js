@@ -7,7 +7,7 @@ router.get('/', async (req, res) => {
     let deeds = [];
 
     try {
-        deeds = await Deeds.find();
+        deeds = await Deed.find();
     } catch (e) {
         console.log(e);
         return res.status(500).send(e.message);
