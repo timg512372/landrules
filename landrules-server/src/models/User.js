@@ -22,8 +22,10 @@ let User = new Schema({
         },
         formID: {
             type: String
+        },
+        userID: {
+            type: String
         }
-        
         
     },
 )
