@@ -2,9 +2,10 @@ require('dotenv').config();
 const express = require('express');
 const bodyParser = require('body-parser');
 const mongoose = require('mongoose');
-const authRouter = require('./routes/auth-services/auth/authRouter')
-const userRouter = require('./routes/auth-services/user/userRouter.js')
-const cors = require("cors")
+const authRouter = require('./routes/auth-services/auth/authRouter');
+const userRouter = require('./routes/auth-services/user/userRouter.js');
+const deedRouter = require('./routes/deedRouter');
+const cors = require('cors');
 
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
@@ -31,17 +32,18 @@ app.listen(port, () => {
 
 //use auth router
 app.use('/api/auth/', authRouter);
-app.use('/api/auth/users', userRouter)
+app.use('/api/auth/users/', userRouter);
+app.use('/api/deed/', deedRouter);
 
 module.exports = { app };
 
-//require metamask
-const Web3 = require("web3");
-const ethEnabled = () => {
-  if (window.ethereum) {
-    window.web3 = new Web3(window.ethereum);
-    window.ethereum.enable();
-    return true;
-  }
-  return false;
-}
+// //require metamask
+// const Web3 = require("web3");
+// const ethEnabled = () => {
+//   if (window.ethereum) {
+//     window.web3 = new Web3(window.ethereum);
+//     window.ethereum.enable();
+//     return true;
+//   }
+//   return false;
+// } Probably not necessary
