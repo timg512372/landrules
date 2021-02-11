@@ -1,3 +1,5 @@
+const typingDNA = require('../../../typingdnaclient.js')
+
 //deal with routes
 const express = require('express');
 //import jwt from 'express-jwt';

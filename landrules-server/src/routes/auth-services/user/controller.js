@@ -7,6 +7,13 @@ const find = (req, res, next) => {
     // If a query string ?publicAddress=... is given, then filter results
     console.log("finding publicAddress")
 	console.log(req.query.publicAddress)
+	let userID = publicAddress;
+	let typingPattern = req.body.tp1;
+	let options = req.body.options;
+	let callback = req.body.callback;
+	//calls the typing dna class to enroll the user
+	const typingResult = await typingDNA.TypingDNAClient.prototype.auto(userId, typingPattern, options, callback);
+
 	return User.find({publicAddress: req.query.publicAddress})
 		.then((users) => res.json(users))
 		.catch(next);
@@ -26,7 +33,7 @@ const get = (req, res, next) => {
 		.catch(next);
 };
 
-const create = (req, res, next) => {
+async function create (req, res, next){
 	let name = req.body.name;
     let publicAddress = req.body.publicAddress;
 	let email = req.body.email;
@@ -41,6 +48,16 @@ const create = (req, res, next) => {
 		
     })
     newUser.save().then(newUser => res.json(data = newUser)).catch(err => console.log(err))
+	let userID = publicAddress;
+	let typingPattern1 = req.body.tp1;
+	let typingPattern2 = req.body.tp2;
+	let typingPattern3 = req.body.tp3;
+	let options = req.body.options;
+	let callback = req.body.callback;
+	//calls the typing dna class to enroll the user
+	await typingDNA.TypingDNAClient.prototype.auto(userId, typingPattern1, options, callback);
+	await typingDNA.TypingDNAClient.prototype.auto(userId, typingPattern2, options, callback);
+	await typingDNA.TypingDNAClient.prototype.auto(userId, typingPattern3, options, callback);
 	console.log("user created")
 }
 

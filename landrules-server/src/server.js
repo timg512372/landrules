@@ -2,8 +2,8 @@ require('dotenv').config();
 const express = require('express');
 const bodyParser = require('body-parser');
 const mongoose = require('mongoose');
-// const authRouter = require('./routes/auth-services/auth/authRouter');
-// const userRouter = require('./routes/auth-services/user/userRouter.js');
+const authRouter = require('./routes/auth-services/auth/authRouter.js');
+const userRouter = require('./routes/auth-services/user/userRouter.js');
 const deedRouter = require('./routes/deedRouter');
 const cors = require('cors');
 
@@ -30,8 +30,8 @@ app.listen(port, () => {
 
 //use auth router
 // one of the below is broken
-// app.use('/api/auth/', authRouter);
-// app.use('/api/auth/users/', userRouter);
+app.use('/api/auth/', authRouter);
+app.use('/api/auth/users/', userRouter);
 app.use('/api/deed/', deedRouter);
 
 module.exports = { app };
