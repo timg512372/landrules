@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: UNLICENSED
+
 pragma solidity ^0.6.0;
 
 import "@openzeppelin/contracts/access/AccessControl.sol";
@@ -25,11 +27,12 @@ contract DeedFactory is AccessControl {
 
     Deed[] public deedArray;
 
-    mapping(address => uint256) public ownerDeedCount;
+    mapping(address => uint256) internal ownerDeedCount;
     mapping(uint256 => address) internal deedToOwner;
     
     bytes32 public constant ADMINS = keccak256('ADMINS');
-    
+    event CreateDeed(uint256 deedId, string name, string status, string comments, string jsonHash, string coordinates);
+
     modifier ownsDeed(uint256 _deedId) {
         require(
             (deedToOwner[_deedId] == msg.sender),
@@ -90,6 +93,7 @@ contract DeedFactory is AccessControl {
             deedArray.push(Deed(deedId, _name, 'P', '', _jsonHash, _coordinates));
             ownerDeedCount[msg.sender] = ownerDeedCount[msg.sender] + 1;
             deedToOwner[deedId] = msg.sender;
+            emit CreateDeed(deedId, _name, 'P', '', _jsonHash, _coordinates);
      }
     
     // Tranfer a deed from one person to another
@@ -98,7 +102,7 @@ contract DeedFactory is AccessControl {
     // }
     
     // For admins to set the status of a deed
-    function setStatus(string calldata _status, uint _deedId) onlyAdmins public {
+    function setStatus(string memory _status, uint _deedId) onlyAdmins public {
         deedArray[_deedId].status = _status;
      }
 }
