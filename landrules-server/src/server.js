@@ -7,6 +7,9 @@ const userRouter = require('./routes/auth-services/user/userRouter.js');
 const deedRouter = require('./routes/deedRouter');
 const cors = require('cors');
 
+const app = express();
+app.use(bodyParser.json());
+
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
 app.use(cors());
@@ -23,8 +26,6 @@ db.on('error', (err) => {
     console.error(`Error while connecting to DB: ${err.message}`);
 });
 
-const app = express();
-app.use(bodyParser.json());
 
 app.listen(port, () => {
     console.log(`Listening on port ${port}`);

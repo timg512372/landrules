@@ -1,6 +1,6 @@
 const express = require('express')
 
-const User = require('../../../models/Accounts.js'); 
+const User = require('../../../models/User.js'); 
 
 
 const find = (req, res, next) => {

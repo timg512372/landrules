@@ -4,7 +4,7 @@ const express = require('express')
 const jwt = require('jsonwebtoken')
 const config = require('./config.js')
 //import { config } from '../../config';
-const User = require('../../../models/Accounts.js')
+const User = require('../../../models/User.js')
 
 const create = (req, res, next) => {
   console.log(":3")
