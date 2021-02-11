@@ -25,19 +25,14 @@ contract DeedFactory is AccessControl {
 
     Deed[] public deedArray;
 
-    mapping(uint256 => address) internal _balances;
-    mapping(address => uint256) internal ownerTokenCount;
-
-    //mapping of user address to Deed
-    mapping(address => Deed) internal userDeeds;
-    //mapping of deedID to user address
-    mapping(uint256 => address) internal _users;
+    mapping(address => uint256) public ownerDeedCount;
+    mapping(uint256 => address) internal deedToOwner;
     
     bytes32 public constant ADMINS = keccak256('ADMINS');
     
     modifier ownsDeed(uint256 _deedId) {
         require(
-            (_balances[_deedId] == msg.sender),
+            (deedToOwner[_deedId] == msg.sender),
             "You don't own the deed!"
         );
         _;
@@ -78,10 +73,10 @@ contract DeedFactory is AccessControl {
         view
         returns (uint256[] memory)
     {
-        uint256[] memory result = new uint256[](ownerTokenCount[_owner]);
+        uint256[] memory result = new uint256[](ownerDeedCount[_owner]);
         uint256 counter = 0;
         for (uint256 i = 0; i < deedArray.length; i++) {
-            if (_balances[i] == msg.sender) {
+            if (deedToOwner[i] == msg.sender) {
                 result[counter] = i;
                 counter++;
             }
@@ -91,15 +86,10 @@ contract DeedFactory is AccessControl {
 
     // Make a new deed
      function newDeed(string calldata _name, string calldata _jsonHash, string calldata _coordinates) external {
-            //where to get deed ID? 
-            //what to do with name
-            //not sure what balances and ownerTokenCount do, but we should have a mapping of deedID to address
-            Deed newDeed = Deed(123, '', 'P', '', _jsonHash, _coordinates);
-            deedArray.push(newDeed);
-            uint256 id = deedArray.length - 1;
-            balances[id][msg.sender] = 1;
-            userDeeds[msg.sender] = newDeed;
-            _users[newDeed.deedId] = msg.sender;
+            uint256 deedId = deedArray.length;
+            deedArray.push(Deed(deedId, _name, 'P', '', _jsonHash, _coordinates));
+            ownerDeedCount[msg.sender] = ownerDeedCount[msg.sender] + 1;
+            deedToOwner[deedId] = msg.sender;
      }
     
     // Tranfer a deed from one person to another
@@ -108,8 +98,7 @@ contract DeedFactory is AccessControl {
     // }
     
     // For admins to set the status of a deed
-    function setStatus(string calldata _status, uint _deedId) onlyAdmins {
-        deed = deedArray[deedId];
-        deed.status = _status;
+    function setStatus(string calldata _status, uint _deedId) onlyAdmins public {
+        deedArray[_deedId].status = _status;
      }
 }
