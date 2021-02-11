@@ -2,13 +2,14 @@ require('dotenv').config();
 const express = require('express');
 const bodyParser = require('body-parser');
 const mongoose = require('mongoose');
-const authRouter = require('./routes/auth-services/auth/authRouter');
-const userRouter = require('./routes/auth-services/user/userRouter.js');
+// const authRouter = require('./routes/auth-services/auth/authRouter');
+// const userRouter = require('./routes/auth-services/user/userRouter.js');
 const deedRouter = require('./routes/deedRouter');
 const cors = require('cors');
 
-app.use(bodyParser.urlencoded({ extended: false }));
+const app = express();
 app.use(bodyParser.json());
+app.use(bodyParser.urlencoded({ extended: false }));
 app.use(cors());
 
 const port = process.env.PORT ? process.env.PORT : 4000;
@@ -23,16 +24,14 @@ db.on('error', (err) => {
     console.error(`Error while connecting to DB: ${err.message}`);
 });
 
-const app = express();
-app.use(bodyParser.json());
-
 app.listen(port, () => {
     console.log(`Listening on port ${port}`);
 });
 
 //use auth router
-app.use('/api/auth/', authRouter);
-app.use('/api/auth/users/', userRouter);
+// one of the below is broken
+// app.use('/api/auth/', authRouter);
+// app.use('/api/auth/users/', userRouter);
 app.use('/api/deed/', deedRouter);
 
 module.exports = { app };
