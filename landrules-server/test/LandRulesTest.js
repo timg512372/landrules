@@ -40,7 +40,7 @@ contract('LandRules', (accounts) => {
     });
 
     context('Editing deeds', async () => {
-        it('Admins should be able to edit token status', async () => {
+        it('Admins should be able to edit deed status', async () => {
             await contractInstance.setAdminAuthorization(admin, true, { from: owner });
             await contractInstance.newDeed(name, jsonHash, coordinates);
             await contractInstance.setStatus(newStatus, 0, { from: admin });
@@ -49,7 +49,7 @@ contract('LandRules', (accounts) => {
             expect(storedToken.status).to.equal(newStatus);
         });
 
-        it('Non-admins should not be able to edit token status', async () => {
+        it('Non-admins should not be able to edit deed status', async () => {
             await contractInstance.setAdminAuthorization(admin, true, { from: owner });
             await contractInstance.newDeed(name, jsonHash, coordinates);
             try {
@@ -61,6 +61,19 @@ contract('LandRules', (accounts) => {
 
             let storedToken = await contractInstance.deedArray(0, { from: owner });
             expect(storedToken.status).to.equal('P');
+        });
+    });
+
+    context('Transferring deeds', async () => {
+        it('Owners should be able to transfer deeds', async () => {
+            await contractInstance.newDeed(name, jsonHash, coordinates, { from: alice });
+            await contractInstance.transferDeed(0, bob, { from: alice });
+
+            let bobsdeeds = await contractInstance.getDeedByOwner(bob);
+            expect(bobsdeeds.length).to.equal(1);
+
+            let alicedeeds = await contractInstance.getDeedByOwner(alice);
+            expect(alicedeeds.length).to.equal(0);
         });
     });
 });

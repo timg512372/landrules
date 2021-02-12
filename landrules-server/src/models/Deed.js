@@ -7,7 +7,6 @@ const Schema = mongoose.Schema;
 let Deed = new Schema({
     name: {
         type: String,
-        unique: true,
         required: true,
     },
     deedId: {

@@ -96,10 +96,12 @@ contract DeedFactory is AccessControl {
             emit CreateDeed(deedId, _name, 'P', '', _jsonHash, _coordinates);
      }
     
-    // Tranfer a deed from one person to another
-     //function transferDeed(uint _deedId, address _newOwner) external ownsDeed(_deedId) {
-        
-    // }
+    // Transfer a deed from one person to another
+    function transferDeed(uint _deedId, address _newOwner) external ownsDeed(_deedId) {
+        ownerDeedCount[msg.sender] = ownerDeedCount[msg.sender] - 1;
+        ownerDeedCount[_newOwner] = ownerDeedCount[_newOwner] + 1;
+        deedToOwner[_deedId] = _newOwner;
+    }
     
     // For admins to set the status of a deed
     function setStatus(string memory _status, uint _deedId) onlyAdmins public {
