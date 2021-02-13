@@ -2,6 +2,7 @@
   "name": "landrules-react",
   "version": "0.1.0",
   "private": true,
+  "license": "UNLICENSED",
   "dependencies": {
     "@craco/craco": "^6.1.1",
     "@reach/router": "^1.3.4",
