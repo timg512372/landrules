@@ -1,8 +1,12 @@
 const express = require('express');
 const Deed = require('../models/Deed');
-const { initializeWeb3 } = require('../utils/blockchainUtils');
-const router = express.Router();
 const sha256 = require('js-sha256');
+const fs = require('fs');
+const Anvil = require('@anvilco/anvil');
+
+const { initializeWeb3 } = require('../utils/blockchainUtils');
+
+const router = express.Router();
 
 router.get('/', async (req, res) => {
     let deeds = [];
@@ -30,9 +34,21 @@ router.get('/getDeedByOwner', async (req, res) => {
     const { web3, contractInstance } = initializeWeb3();
     let deeds = [];
     try {
-        deeds = await contractInstance.methods.getDeedByOwner(address).call();
-        console.log(deeds);
+        let deedArray = await contractInstance.methods.getDeedByOwner(address).call();
+        let promises = deedArray.map(async (deedId) => {
+            let sc = await contractInstance.methods.deedArray(deedId).call();
+            let db = await Deed.findOne({ deedId });
+
+            db.tampered =
+                sha256(db.pdfJson) != sc.jsonHash ||
+                JSON.stringify(db.coordinates) != sc.coordinates;
+
+            return db;
+        });
+
+        deeds = await Promise.all(promises);
     } catch (e) {
+        console.log(e);
         return res.status(500).send(e);
     }
 
@@ -88,25 +104,31 @@ router.post('/newDeed', async (req, res) => {
 });
 
 router.get('/pdf', async (req, res) => {
-    const { deedId } = req.body;
+    const { deedId } = req.query;
     if (!deedId) {
-        return res.status(400).send('User address not found');
+        return res.status(400).send('Deed ID not found');
     }
     try {
         let query = await Deed.findOne({ deedId });
-        data = JSON.parse(query.pdfJson);
+
+        if (!query) {
+            return res.status(400).send('Deed does not exist');
+        }
+
+        let json = JSON.parse(query.pdfJson);
 
         const anvilClient = new Anvil({ apiKey: process.env.ANVIL });
-        const { statusCode, data } = await anvilClient.generatePDF(exampleData);
-        console.log(statusCode); // => 200
+        const { statusCode, data } = await anvilClient.generatePDF(json);
+
         // Data will be the filled PDF raw bytes
-        fs.writeFileSync('output.pdf', data, { encoding: null });
+        let fileName = sha256(Date.now().toString());
+        fs.writeFileSync(`pdfs/${fileName}.pdf`, data, { encoding: null });
+
+        res.download(`pdfs/${fileName}.pdf`, `${query.name}.pdf`);
     } catch (e) {
         console.log(e);
         return res.status(500).send(e.message);
     }
-
-    return res.status(200).json({ success: true });
 });
 
 module.exports = router;

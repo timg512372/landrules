@@ -6,11 +6,13 @@
     "scripts": {
         "test": "echo \"Error: no test specified\" && exit 1",
         "start": "node src/server.js",
-        "dev": "nodemon src/server.js"
+        "dev": "nodemon src/server.js",
+        "deploy": "truffle deploy network"
     },
     "author": "",
     "license": "ISC",
     "dependencies": {
+        "@anvilco/anvil": "^2.6.0",
         "@openzeppelin/contracts": "^3.4.0",
         "@truffle/hdwallet-provider": "^1.2.1",
         "bn-chai": "^1.0.1",
