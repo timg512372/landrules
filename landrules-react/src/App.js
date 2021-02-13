@@ -7,7 +7,9 @@ import './App.less';
 import Home from './pages/Home.js';
 import Login from './pages/Login.js';
 import Register from './pages/Register.js';
+import Form from './pages/Form.js';
 import NavBar from './NavBar.js';
+
 
 const App = () => (
   <div>
@@ -16,6 +18,7 @@ const App = () => (
       <Home path="/" />
       <Login path="/login" />
       <Register path="/register" />
+      <Form path="form" />
     </Router>
   </div>
 );

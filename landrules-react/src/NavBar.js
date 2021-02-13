@@ -28,6 +28,9 @@ function Navbar(props) {
               </svg>
               <span>landRules</span>
             </Menu.Item>
+            <Menu.Item key="form" icon={<TransactionOutlined />} style={{float: "right"}}>
+              <Link to="/form">Form</Link>
+            </Menu.Item>
             <Menu.Item key="register" icon={<TransactionOutlined />} style={{float: "right"}}>
               <Link to="/register">Register</Link>
             </Menu.Item>
