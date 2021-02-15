@@ -8,12 +8,10 @@ let User = new Schema({
     name: {
         type: String,
         unique: true,
-        required: true,
     },
     email: {
         type: String,
         unique: true,
-        required: true,
         validate(val) {
             if (!validator.isEmail(val)) {
                 throw new Error('Invalid Email');
@@ -23,7 +21,6 @@ let User = new Schema({
     publicAddress: {
         type: String,
         unique: true,
-        required: true,
         validate(val) {
             if (!validator.isEthereumAddress(val)) {
                 throw new Error('Invalid Eth Address');
