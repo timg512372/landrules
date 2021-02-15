@@ -1,15 +1,14 @@
-import React from 'react';
-import { render } from "react-dom"
-import { Button } from 'antd';
-import { Router, Link } from "@reach/router"
-import './App.less';
+import React from "react";
+import { render } from "react-dom";
+import { Button } from "antd";
+import { Router, Link } from "@reach/router";
+import "./App.less";
 
-import Home from './pages/Home.js';
-import Login from './pages/Login.js';
-import Register from './pages/Register.js';
-import Form from './pages/Form.js';
-import NavBar from './NavBar.js';
-
+import Home from "./pages/Home.js";
+import Login from "./pages/Login.js";
+import Register from "./pages/Register.js";
+import Form from "./pages/Form.js";
+import NavBar from "./components/NavBar.js";
 
 const App = () => (
   <div>
