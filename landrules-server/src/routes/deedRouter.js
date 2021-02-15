@@ -11,8 +11,22 @@ const router = express.Router();
 router.get('/', async (req, res) => {
     let deeds = [];
 
+    const { web3, contractInstance } = initializeWeb3();
+
     try {
-        deeds = await Deed.find();
+        let deedsMongo = await Deed.find();
+
+        let promises = deedsMongo.map(async (deed) => {
+            let sc = await contractInstance.methods.deedArray(deed.deedId).call();
+
+            deed.tampered =
+                sha256(deed.pdfJson) != sc.jsonHash ||
+                JSON.stringify(deed.coordinates) != sc.coordinates;
+
+            return deed;
+        });
+
+        deeds = await Promise.all(promises);
     } catch (e) {
         console.log(e);
         return res.status(500).send(e.message);
@@ -35,6 +49,7 @@ router.get('/getDeedByOwner', async (req, res) => {
     let deeds = [];
     try {
         let deedArray = await contractInstance.methods.getDeedByOwner(address).call();
+        console.log(deedArray);
         let promises = deedArray.map(async (deedId) => {
             let sc = await contractInstance.methods.deedArray(deedId).call();
             let db = await Deed.findOne({ deedId });
@@ -60,12 +75,16 @@ router.get('/getDeedByOwner', async (req, res) => {
 
 // Needs to be auth locked
 router.post('/newDeed', async (req, res) => {
-    const { name, comments, coordinates, json } = req.body;
+    const { name, comments, coordinates, json, address } = req.body;
 
     if (!name) {
         return res.status(400).send('Deed name not found');
     } else if (!coordinates) {
         return res.status(400).send('Coordinates not found');
+    } else if (!address) {
+        return res.status(400).send('Address not found');
+    } else if (!address) {
+        return res.status(400).send('Address not found');
     }
 
     const { web3, contractInstance } = initializeWeb3();
@@ -92,7 +111,7 @@ router.post('/newDeed', async (req, res) => {
         await newDeed.save();
 
         console.log(deedId);
-        // await contractInstance.methods.transferDeed(id, address).send({ from: accounts[0], gasPrice: '100'})
+        await contractInstance.methods.transferDeed(deedId, address).send({ from: accounts[0] });
     } catch (e) {
         console.log(e);
         return res.status(500).send(e.message);
@@ -125,6 +144,33 @@ router.get('/pdf', async (req, res) => {
         fs.writeFileSync(`pdfs/${fileName}.pdf`, data, { encoding: null });
 
         res.download(`pdfs/${fileName}.pdf`, `${query.name}.pdf`);
+    } catch (e) {
+        console.log(e);
+        return res.status(500).send(e.message);
+    }
+});
+
+router.get('/setStatus', async (req, res) => {
+    const { deedId, status } = req.query;
+
+    if (!deedId) {
+        return res.status(400).send('Deed ID not found');
+    } else if (!status) {
+        return res.status(400).send('Deed status not found');
+    }
+
+    const { web3, contractInstance } = initializeWeb3();
+    const accounts = await web3.eth.getAccounts();
+
+    try {
+        let deed = await Deed.findOne({ deedId });
+
+        if (!deed) {
+            return res.status(400).send('Deed does not exist');
+        }
+        deed.status = status;
+        await deed.save();
+        await contractInstance.methods.setStatus(status, deedId).send({ from: accounts[0] });
     } catch (e) {
         console.log(e);
         return res.status(500).send(e.message);

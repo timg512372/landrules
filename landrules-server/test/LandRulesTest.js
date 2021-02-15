@@ -37,6 +37,21 @@ contract('LandRules', (accounts) => {
             expect(events.logs[0].args.status).to.equal('P');
             expect(events.logs[0].args.deedId).to.eq.BN(1);
         });
+
+        it('Users should be able to get their deed IDs', async () => {
+            await contractInstance.newDeed(secondName, jsonHash, coordinates, { from: owner });
+            await contractInstance.newDeed(name, jsonHash, coordinates, { from: alice });
+            await contractInstance.newDeed(name, jsonHash, coordinates, { from: owner });
+            await contractInstance.newDeed(name, jsonHash, coordinates, { from: alice });
+
+            let ownedIDs = await contractInstance.getDeedByOwner(alice, { from: bob });
+            expect(ownedIDs[0]).to.eq.BN(1);
+            expect(ownedIDs[1]).to.eq.BN(3);
+
+            ownedIDs = await contractInstance.getDeedByOwner(owner, { from: bob });
+            expect(ownedIDs[0]).to.eq.BN(0);
+            expect(ownedIDs[1]).to.eq.BN(2);
+        });
     });
 
     context('Editing deeds', async () => {

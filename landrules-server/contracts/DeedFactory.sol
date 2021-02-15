@@ -79,7 +79,7 @@ contract DeedFactory is AccessControl {
         uint256[] memory result = new uint256[](ownerDeedCount[_owner]);
         uint256 counter = 0;
         for (uint256 i = 0; i < deedArray.length; i++) {
-            if (deedToOwner[i] == msg.sender) {
+            if (deedToOwner[i] == _owner) {
                 result[counter] = i;
                 counter++;
             }

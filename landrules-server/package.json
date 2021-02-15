@@ -7,7 +7,7 @@
         "test": "echo \"Error: no test specified\" && exit 1",
         "start": "node src/server.js",
         "dev": "nodemon src/server.js",
-        "deploy": "truffle deploy network"
+        "deploy": "truffle deploy --network goerli"
     },
     "author": "",
     "license": "ISC",
