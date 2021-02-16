@@ -5,6 +5,7 @@ const mongoose = require('mongoose');
 const authRouter = require('./routes/auth-services/auth/authRouter.js');
 const userRouter = require('./routes/auth-services/user/userRouter.js');
 const deedRouter = require('./routes/deedRouter');
+const requestRouter = require('./routes/requestRouter.js')
 const cors = require('cors');
 
 const app = express();
@@ -33,6 +34,7 @@ app.listen(port, () => {
 app.use('/api/auth/', authRouter);
 app.use('/api/auth/users/', userRouter);
 app.use('/api/deed/', deedRouter);
+app.use('/api/request/', requestRouter)
 
 module.exports = { app };
 

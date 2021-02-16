@@ -25,37 +25,25 @@ function ApproveRequests() {
     });
     const columns = [
         {
-            title: 'ID',
-            dataIndex: 'ID',
-            key: 'ID',
+            title: 'FormID',
+            dataIndex: 'FormID',
+            key: 'FormID',
             // render: (text) => <a>{text}</a>,
-        },
-        {
-            title: 'Client',
-            dataIndex: 'Client',
-            key: 'Client',
+        },{
+            title: 'Public Address',
+            dataIndex: 'PublicAddress',
+            key: 'PublicAddress',
             // render: (text) => <a>{text}</a>,
-        },
-        {
-            title: 'ShipmentID',
-            dataIndex: 'ShipmentID',
-            key: 'ShipmentID',
+        },{
+            title: 'Coordinates',
+            dataIndex: 'Coordinates',
+            key: 'Coordinates',
             // render: (text) => <a>{text}</a>,
         },
         {
             title: 'Date',
             dataIndex: 'Date',
             key: 'Date',
-        },
-        {
-            title: 'Order ID',
-            dataIndex: 'Order',
-            key: 'Order',
-        },
-        {
-            title: 'Quantity',
-            dataIndex: 'Quantity',
-            key: 'Quantity',
         },
         {
             title: 'Tag',
@@ -84,9 +72,9 @@ function ApproveRequests() {
             key: 'action',
             render: (text, record) => (
                 <Space size="middle">
-                    <a onClick={(event) => approveFunc(record.ID, record.ShipmentID, record.Date, record.Order, record.Quantity, record.Client, record._id)} 
+                    <a onClick={(event) => approveFunc(record.FormID, record.PublicAddress, record.Coordinates, record.Date, record._id)} 
                                 style={{color: 'green'}}>APPROVE</a>
-                    <a onClick={(event) => denyFunc(record.ID, record.ShipmentID, record.Date, record.Order, record.Quantity, record.Client, record._id)} style={{color: 'red'}}>DENY</a>
+                    <a onClick={(event) => denyFunc(record.FormID, record.PublicAddress, record.Coordinates, record.Date, record._id)} style={{color: 'red'}}>DENY</a>
                     {/* <a onClick={} style={{color: 'orange'}}>Message</a> */}
                 </Space>
             ),
@@ -96,14 +84,12 @@ function ApproveRequests() {
     function approveFunc(id, shipment, date, order, quant, client, serverID) {
         //pass the parameters ^ to minting function
         console.log(serverID);
-        //@KENTARO call minting function here
         appRequest(serverID).then((res) => console.log(res));
         //repost request with approved tag
-
-        mintFromApproved(client, quant);
+        let res = await axios.get('http://localhost:4000/api/deed/setStatus')
     }
 
-    function denyFunc(id, shipment, date, order, quant, client, serverID) {
+    function denyFunc(id, publicAddress, coordinates, date, serverID) {
         console.log(serverID);
         rejRequest(serverID).then((res) => console.log(res));
     }

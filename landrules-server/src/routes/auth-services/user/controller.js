@@ -1,5 +1,6 @@
 const express = require('express');
 require('dotenv').config();
+const auto = require('./typingdna.js')
 const TypingDNAClient = require('../../../typingdnaclient.js')
 const User = require('../../../models/User.js');
 const TypingDNA = new TypingDNAClient(process.env.TYPINGDNA_KEY, process.env.TYPINGDNA_SECRET, '192.168.1.102');
@@ -9,10 +10,6 @@ const find = (req, res, next) => {
     console.log('finding publicAddress');
     console.log(req.query.publicAddress);
     let publicAddress = req.query.publicAddress
-    
-    
-    
-		
 	return User.find({ publicAddress: req.query.publicAddress }).then((users => res.json(users))).catch(next)
 
 };
@@ -45,14 +42,9 @@ const check = async (req, res, next) => {
     let userID = req.body.publicAddress;
     let options = req.body.options;
     console.log('checking')
-    const typingResult = TypingDNA.auto(
-        userID,
-        typingPattern,
-        options,
-        callback
-    );
+    const typingResult = auto.auto(typingPattern, userID)
     console.log('typing result: ' + typingResult)
-    return res.json(typingResult)
+    res.json((data = typingResult))
 }
 
 
@@ -85,12 +77,16 @@ const create = async (req, res, next) => {
     let typingPattern3 = req.body.tp3;
     let options = req.body.options;
     //calls the typing dna class to enroll the user
-	console.log(TypingDNA)
-	console.log(TypingDNA.prototype)
-	console.log(TypingDNA.auto)
-    let saveUser1 = TypingDNA.auto(userId, typingPattern1, options, callback);
-    let saveUser2 = TypingDNA.auto(userId, typingPattern2, options, callback);
-    let saveUser3 = TypingDNA.auto(userId, typingPattern3, options, callback);
+	//console.log(TypingDNA.auto)
+    //let saveUser1 = TypingDNA.auto(userId, typingPattern1, options, callback);
+    //let saveUser2 = TypingDNA.auto(userId, typingPattern2, options, callback);
+    //let saveUser3 = TypingDNA.auto(userId, typingPattern3, options, callback);
+    let saveUser1 = auto.auto(typingPattern1, userId)
+    console.log(saveUser1)
+    let saveUser2 = auto.auto(typingPattern2, userId)
+    console.log(saveUser2)
+    let saveUser3 = auto.auto(typingPattern3, userId)
+    console.log(saveUser3)
     console.log('user created');
 	return "user created"
 }
