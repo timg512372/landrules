@@ -1,12 +1,10 @@
 import React, { useState, useEffect } from 'react';
-import { BrowserRouter as Router, Switch, Route, Link } from 'react-router-dom';
 import axios from 'axios';
 
 import { Layout } from 'antd';
 import { Table, Tag, Space } from 'antd';
-import Navbar from '../../components/Navbar.js';
+import Navbar from '../../components/NavBar.js';
 import { Header } from 'antd/lib/layout/layout';
-import mintFromApproved from './mintApprove';
 
 function ApproveRequests() {
     const [loading, setLoading] = useState(true);
@@ -81,7 +79,7 @@ function ApproveRequests() {
         },
     ];
 
-    function approveFunc(id, shipment, date, order, quant, client, serverID) {
+    async function approveFunc(id, shipment, date, order, quant, client, serverID) {
         //pass the parameters ^ to minting function
         console.log(serverID);
         appRequest(serverID).then((res) => console.log(res));
@@ -140,3 +138,5 @@ function ApproveRequests() {
         </>
     );  
 }
+
+export default ApproveRequests;

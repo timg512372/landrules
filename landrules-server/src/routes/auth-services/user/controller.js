@@ -37,14 +37,14 @@ const get = (req, res, next) => {
         .catch(next);
 };
 
-const check = async (req, res, next) => {
+const check = (req, res, next) => {
     let typingPattern = req.body.tp;
     let userID = req.body.publicAddress;
     let options = req.body.options;
     console.log('checking')
     const typingResult = auto.auto(typingPattern, userID)
     console.log('typing result: ' + typingResult)
-    res.json((data = typingResult))
+    return res.status(201).send(typingResult)
 }
 
 

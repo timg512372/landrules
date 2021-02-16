@@ -3,6 +3,7 @@ import Navbar from '../components/NavBar.js';
 import { Button, Tabs, Input, Upload, message } from 'antd';
 import { Table, Tag, Space } from 'antd';
 import axios from 'axios';
+import web3 from 'web3';
 
 // import { BrowserRouter as Router, Switch, Route, Link } from 'react-router-dom';
 
@@ -12,34 +13,37 @@ function UserStatus() {
     const [loading, setLoading] = useState(true);
     const [data, setData] = useState([]);
     //not sure if we want to store public address as global var or have it like this 
-    if (!window.ethereum) {
-        // what is window
-        console.log('checking for metamask');
-        window.alert('Please install MetaMask first.');
-        return;
-    }
-
-    if (!web3) {
-        try {
-            // Request account access if needed
-            await window.ethereum.enable();
-
-            // We don't know window.web3 version, so we use our own instance of Web3
-            // with the injected provider given by MetaMask
-            web3 = new Web3(window.ethereum);
-        } catch (error) {
-            window.alert('You need to allow MetaMask.');
+    async function checkPubAddress() {
+        if (!window.ethereum) {
+            // what is window
+            console.log('checking for metamask');
+            window.alert('Please install MetaMask first.');
             return;
         }
+    
+        if (!web3) {
+            try {
+                // Request account access if needed
+                window.ethereum.enable();
+    
+                // We don't know window.web3 version, so we use our own instance of Web3
+                // with the injected provider given by MetaMask
+                web3 = new web3(window.ethereum);
+            } catch (error) {
+                window.alert('You need to allow MetaMask.');
+                return;
+            }
+        }
+        const coinbase = await web3.eth.getCoinbase();
+        if (!coinbase) {
+            window.alert('Please activate MetaMask first.');
+            return;
+        }
+    
+        const publicAddress = coinbase.toLowerCase();
+        return publicAddress
     }
-    const coinbase = await web3.eth.getCoinbase();
-    if (!coinbase) {
-        window.alert('Please activate MetaMask first.');
-        return;
-    }
-
-    const publicAddress = coinbase.toLowerCase();
-    //end
+    let publicAddress = checkPubAddress();
     useEffect(() => {
         const getData = async () => {
             await axios.get(`http://localhost:4000/api/request/getRequestsByOwner?publicAddress=${publicAddress}`)
