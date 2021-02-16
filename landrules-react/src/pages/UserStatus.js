@@ -11,39 +11,10 @@ import web3 from 'web3';
 
 function UserStatus() {
     const [loading, setLoading] = useState(true);
-    const [data, setData] = useState([]);
-    //not sure if we want to store public address as global var or have it like this 
-    async function checkPubAddress() {
-        if (!window.ethereum) {
-            // what is window
-            console.log('checking for metamask');
-            window.alert('Please install MetaMask first.');
-            return;
-        }
-    
-        if (!web3) {
-            try {
-                // Request account access if needed
-                window.ethereum.enable();
-    
-                // We don't know window.web3 version, so we use our own instance of Web3
-                // with the injected provider given by MetaMask
-                web3 = new web3(window.ethereum);
-            } catch (error) {
-                window.alert('You need to allow MetaMask.');
-                return;
-            }
-        }
-        const coinbase = await web3.eth.getCoinbase();
-        if (!coinbase) {
-            window.alert('Please activate MetaMask first.');
-            return;
-        }
-    
-        const publicAddress = coinbase.toLowerCase();
-        return publicAddress
-    }
-    let publicAddress = checkPubAddress();
+    const [data, setData] = useState([])
+
+    //end
+    const publicAddress = "foo"; // Dummy value for now
     useEffect(() => {
         const getData = async () => {
             await axios.get(`http://localhost:4000/api/request/getRequestsByOwner?publicAddress=${publicAddress}`)
@@ -53,6 +24,7 @@ function UserStatus() {
         };
         getData();
     });
+
     const columns = [
         {
             title: 'FormID',
