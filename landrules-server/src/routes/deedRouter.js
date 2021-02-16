@@ -81,8 +81,8 @@ router.post('/newDeed', async (req, res) => {
         return res.status(400).send('Deed name not found');
     } else if (!coordinates) {
         return res.status(400).send('Coordinates not found');
-    } else if (!address) {
-        return res.status(400).send('Address not found');
+    } else if (!json) {
+        return res.status(400).send('JSON not found');
     } else if (!address) {
         return res.status(400).send('Address not found');
     }
