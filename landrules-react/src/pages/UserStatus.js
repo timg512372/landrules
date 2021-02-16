@@ -3,6 +3,7 @@ import Navbar from '../components/NavBar.js';
 import { Button, Tabs, Input, Upload, message } from 'antd';
 import { Table, Tag, Space } from 'antd';
 import axios from 'axios';
+import web3 from 'web3';
 
 // import { BrowserRouter as Router, Switch, Route, Link } from 'react-router-dom';
 

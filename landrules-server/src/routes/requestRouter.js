@@ -11,9 +11,8 @@ router.get('/', (req, res) => {
 
 
 router.post('/sendRequest', (req, res) => {
-    let id = req.body.ID;
-    let shipID = req.body.ShipmentID;
-    let date = req.body.Date;
+    let formID = req.body.formID;
+    let date = req.body.date;
     let orderID = req.body.Order;
     let quant = req.body.Quantity;
     let user = req.body.Client;
