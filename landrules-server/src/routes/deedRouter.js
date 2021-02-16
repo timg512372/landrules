@@ -150,10 +150,10 @@ router.get('/pdf', async (req, res) => {
     }
 });
 
-router.get('/setStatus', async (req, res) => {
-    const { deedId, status } = req.query;
+router.post('/setStatus', async (req, res) => {
+    const { deedId, status } = req.body;
 
-    if (!deedId) {
+    if (deedId !== 0 && !deedId) {
         return res.status(400).send('Deed ID not found');
     } else if (!status) {
         return res.status(400).send('Deed status not found');
@@ -170,11 +170,15 @@ router.get('/setStatus', async (req, res) => {
         }
         deed.status = status;
         await deed.save();
+
+        console.log('mongo done');
         await contractInstance.methods.setStatus(status, deedId).send({ from: accounts[0] });
     } catch (e) {
         console.log(e);
         return res.status(500).send(e.message);
     }
+
+    return res.status(200).json({ success: true });
 });
 
 module.exports = router;
