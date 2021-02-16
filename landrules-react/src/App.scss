@@ -8,8 +8,11 @@ $primary-700: #5B7044;
 $primary-800: #3B412D;
 $primary-900: #2F3237;
 
+$secondary-500: #D2573D;
+
 @import "./styles/index.scss";
 @import "./styles/Layout.scss";
 @import "./styles/NavBar.scss";
+@import "./styles/Button.scss";
 
 @import "./styles/pages/Home.scss";

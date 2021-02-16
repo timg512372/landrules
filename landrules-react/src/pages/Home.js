@@ -1,5 +1,6 @@
-import React from 'react'
+import React from 'react';
 import Layout from '../components/Layout';
+import { Link } from '@reach/router';
 
 import { ReactComponent as SplashGraphic } from '../svg/splash.svg';
 
@@ -8,8 +9,11 @@ export default function Home() {
     <Layout isWide className="home">
       <div className="jumbotron">
         <SplashGraphic />
-        <h1>Ensuring transparency in land ownership</h1>
+        <aside>
+          <h1>Ensuring transparency in land ownership</h1>
+          <Link to="/register" className="button button--secondary">Register →</Link>
+        </aside>
       </div>
     </Layout>
-  )
+  );
 }
