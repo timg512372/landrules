@@ -4,7 +4,7 @@ import { Button } from "antd";
 import { Router, Link } from "@reach/router";
 import "./App.less";
 import UserStatus from './pages/UserStatus.js'
-
+import ApproveRequests from './pages/notary/ApproveRequests.js'
 import Home from "./pages/Home.js";
 import Login from "./pages/Login.js";
 import Register from "./pages/Register.js";
@@ -20,6 +20,7 @@ const App = () => (
       <Register path="/register" />
       <Form path="form" />
       <UserStatus path="user-status" />
+      <ApproveRequests path='approve-requests' />
     </Router>
   </div>
 );

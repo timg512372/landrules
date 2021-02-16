@@ -2,6 +2,7 @@ const express = require('express');
 require('dotenv').config();
 const TypingDNAClient = require('../../../typingdnaclient.js')
 const User = require('../../../models/User.js');
+const TypingDNA = new TypingDNAClient(process.env.TYPINGDNA_KEY, process.env.TYPINGDNA_SECRET, '192.168.1.102');
 
 const find = (req, res, next) => {
     // If a query string ?publicAddress=... is given, then filter results
@@ -16,6 +17,17 @@ const find = (req, res, next) => {
 
 };
 
+function callback(error, res) {
+    console.log('callback')
+    if (error) {
+        console.log(error)
+        return error;
+    } else {
+        console.log(res)
+        return res;
+    }
+}
+
 const get = (req, res, next) => {
     // AccessToken payload is in req.user.payload, especially its `id` field
     // UserId is the param in /users/:userId
@@ -29,19 +41,20 @@ const get = (req, res, next) => {
 };
 
 const check = async (req, res, next) => {
-    let typingPattern = req.body.tp1;
-    let options = req.body.options;
-    let callback = req.body.callback;
+    let typingPattern = req.body.tp;
     let userID = req.body.publicAddress;
-    const TypingDNA = new TypingDNAClient(process.env.TYPINGDNA_KEY, process.env.TYPINGDNA_SECRET, '192.168.1.102');
+    let options = req.body.options;
+    console.log('checking')
     const typingResult = TypingDNA.auto(
         userID,
         typingPattern,
         options,
         callback
     );
-    return res.send(typingResult.result)
+    console.log('typing result: ' + typingResult)
+    return res.json(typingResult)
 }
+
 
 const create = async (req, res, next) => {
     let name = req.body.name;
@@ -66,19 +79,18 @@ const create = async (req, res, next) => {
         .then((newUser) => res.json((data = newUser)))
         .catch((err) => console.log(err));
     let userId = publicAddress;
+
     let typingPattern1 = req.body.tp1;
     let typingPattern2 = req.body.tp2;
     let typingPattern3 = req.body.tp3;
     let options = req.body.options;
-    let callback = req.body.callback;
     //calls the typing dna class to enroll the user
-	const TypingDNA = new TypingDNAClient(process.env.TYPINGDNA_KEY, process.env.TYPINGDNA_SECRET, '192.168.1.102');
 	console.log(TypingDNA)
 	console.log(TypingDNA.prototype)
 	console.log(TypingDNA.auto)
-    await TypingDNA.auto(userId, typingPattern1, options, callback);
-    await TypingDNA.auto(userId, typingPattern2, options, callback);
-    await TypingDNA.auto(userId, typingPattern3, options, callback);
+    let saveUser1 = TypingDNA.auto(userId, typingPattern1, options, callback);
+    let saveUser2 = TypingDNA.auto(userId, typingPattern2, options, callback);
+    let saveUser3 = TypingDNA.auto(userId, typingPattern3, options, callback);
     console.log('user created');
 	return "user created"
 }
@@ -106,5 +118,5 @@ const patch = (req, res, next) => {
         })
         .catch(next);
 };
-let functions = { find, get, create, patch };
+let functions = { find, get, check, create, patch };
 module.exports = functions;

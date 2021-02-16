@@ -16,6 +16,9 @@ router.route('/').get(controller.find);
 /** Authenticated route */
 //router.route('/:userId').get(jwt(config), controller.get);
 
+/** POST api/users/typing */
+router.route('/typing').post(controller.check);
+
 /** POST /api/users */
 router.route('/').post(controller.create);
 
