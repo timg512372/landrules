@@ -1,8 +1,5 @@
 import React from "react";
-import { render } from "react-dom";
-import { Button } from "antd";
-import { Router, Link } from "@reach/router";
-import "./App.less";
+import { Router } from "@reach/router";
 import UserStatus from './pages/UserStatus.js'
 import ApproveRequests from './pages/notary/ApproveRequests.js'
 import Home from "./pages/Home.js";
@@ -10,6 +7,9 @@ import Login from "./pages/Login.js";
 import Register from "./pages/Register.js";
 import Form from "./pages/Form.js";
 import NavBar from "./components/NavBar.js";
+
+import "./App.less";
+import "./App.scss";
 
 const App = () => (
   <div>

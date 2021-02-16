@@ -1,0 +1,9 @@
+main {
+  box-sizing: border-box;
+  width: 100%;
+  max-width: $page-width;
+  
+  &.layout--wide {
+    max-width: $page-width * 1.5;
+  }
+}

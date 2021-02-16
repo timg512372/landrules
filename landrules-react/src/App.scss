@@ -1,0 +1,18 @@
+// Heck ant designs css all my homies have a strong distaste for ant designs css
+$page-width: 800px;
+
+$primary-300: #C5D995; // Background color
+$primary-500: #8A9868;
+$primary-600: #727E56; // Darker background
+$primary-700: #5B7044;
+$primary-800: #3B412D;
+$primary-900: #2F3237;
+
+$secondary-500: #D2573D;
+
+@import "./styles/index.scss";
+@import "./styles/Layout.scss";
+@import "./styles/NavBar.scss";
+@import "./styles/Button.scss";
+
+@import "./styles/pages/Home.scss";
