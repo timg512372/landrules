@@ -73,6 +73,33 @@ router.get('/getDeedByOwner', async (req, res) => {
     });
 });
 
+router.get('/getDeedById', async (req, res) => {
+    const { deedId } = req.query;
+
+    if (deedId !== 0 && !deedId) {
+        return res.status(400).send('Deed ID not found');
+    }
+
+    const { web3, contractInstance } = initializeWeb3();
+    let deed = {};
+    try {
+        let sc = await contractInstance.methods.deedArray(deedId).call();
+        deed = await Deed.findOne({ deedId });
+        console.log(deed);
+        deed.tampered =
+            sha256(deed.pdfJson) != sc.jsonHash ||
+            JSON.stringify(deed.coordinates) != sc.coordinates;
+    } catch (e) {
+        console.log(e);
+        return res.status(500).send(e);
+    }
+
+    return res.status(200).json({
+        success: true,
+        deed,
+    });
+});
+
 // Needs to be auth locked
 router.post('/newDeed', async (req, res) => {
     const { name, comments, coordinates, json, address } = req.body;
