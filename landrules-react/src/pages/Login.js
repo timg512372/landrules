@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Button, Link } from 'antd';
+import { Button, Link, Input } from 'antd';
 import Web3 from 'web3';
 import axios from 'axios';
 import Register from './Register.js'
@@ -14,6 +14,7 @@ function Login(props) {
     const [password, setPassword] = useState('');
     const [loading, setLoading] = useState(true);
     const [goToReg, setGoToReg] = useState(false);
+    const[typing, setTyping] = useState('');
 
     function handleAuthenticate(publicAddress, signature) {
         console.log("Handling auth")
@@ -165,31 +166,7 @@ function Login(props) {
                 position: 'absolute',
             }}
         >
-        
-
             <div
-                style={{
-                    fontSize: 30,
-                    fontWeight: 'bold',
-                    position: 'absolute',
-                    zIndex: '0',
-                    margin: 'auto',
-                    top: '50%',
-                    left: '50%',
-                    marginRight: '-50%',
-                    transform: 'translate(-50%, -50%)',
-                }}
-            >
-                <div
-                    className="LogIn"
-                    style={{
-                        display: 'flex',
-                        alignItems: 'center',
-                        justifyContent: 'space-around',
-                        flexDirection: 'column',
-                    }}
-                >
-                    <div
                     style = {{
                         position: 'absolute',
                         zIndex: '0',
@@ -197,9 +174,10 @@ function Login(props) {
                         top: '50%',
                         left: '50%',
                         marginRight: '-50%',
-                        transform: 'translate(-50%, -50%)' 
+                        transform: 'translate(-50%, -50%)' ,
+                        
                     }}>
-                        <svg width="901" height="525" viewBox="0 0 901 525" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <svg width="800" height="400" viewBox="0 0 901 525" fill="none" xmlns="http://www.w3.org/2000/svg">
                         <g filter="url(#filter0_bd)">
                         <path d="M4 140C4 117.909 21.9086 100 44 100H857C879.091 100 897 117.909 897 140V477C897 499.091 879.091 517 857 517H44C21.9086 517 4 499.091 4 477V140Z" fill="white"/>
                         </g>
@@ -232,57 +210,66 @@ function Login(props) {
                         </svg>
                     </div>
 
-                    <div
-                        style = {{
-                            display: 'flex',
-                            justifyContent: 'space-around',
-                            alignItems: 'center'
-                        }}
-                    >
+            <div
+                style={{
+                    fontSize: 30,
+                    fontWeight: 'bold',
+                    position: 'absolute',
+                    zIndex: '0',
+                    margin: 'auto',
+                    top: '45%',
+                    left: '34%',
+                    
+                }}
+            >
+                <div
+                    className="LogIn"
+                    style={{
+                        display: 'flex',
+                        alignItems: 'center',
+                        justifyContent: 'space-around',
+                        flexDirection: 'column',
+                    }}
+                >
+
+            
                     <h3
                         style={{
                             fontSize: '40px',
                             color: '#620E0E',
                             fontWeight: '800',
-                            position: 'absolute',
-                            zIndex: '1'
+                            
                         }}
                     >
                         Sign in with Metamask
                     </h3>
+                    
+                        <div>
+                            <div style={{ fontSize: "15px", fontWeight:'500' }}>
+                            Type: I am logging in with Metamask
+                            </div>
+                            <Input onChange={(event) => setTyping(event.target.value)} /> 
+                        </div>
+                    
                     <Button
                         variant="primary"
                         type="submit"
                         onClick={handleLogin}
                         style={{
+                            marginTop: '20px',
                             color: 'white',
                             backgroundColor: '#FB8027',
-                            width: '250px',
-                            height: '65px',
-                            fontSize: '25px',
-                            position: 'absolute',
-                            zIndex: '1'
+                            width: '100px',
+                            height: '30px',
+                            fontSize: '10px',
+                            
                         }}
                     >
                         Continue
                     </Button>
-                    </div>
 
                     
-                    <a
-                        style={{
-                            onClick: {handleLogin},
-                            color: '#C71F03',
-                            fontWeight: '600',
-                            fontSize: '20px',
-                            style: 'normal',
-                            
-                        }}
-                        className="MakeAccount"
-                        href="/register"
-                    >
-                        I don't have an account
-                    </a>
+                    
                 </div>
             </div>
         </div>

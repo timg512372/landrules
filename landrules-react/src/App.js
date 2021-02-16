@@ -3,6 +3,7 @@ import { render } from "react-dom";
 import { Button } from "antd";
 import { Router, Link } from "@reach/router";
 import "./App.less";
+import UserStatus from './pages/UserStatus.js'
 
 import Home from "./pages/Home.js";
 import Login from "./pages/Login.js";
@@ -18,6 +19,7 @@ const App = () => (
       <Login path="/login" />
       <Register path="/register" />
       <Form path="form" />
+      <UserStatus path="user-status" />
     </Router>
   </div>
 );
