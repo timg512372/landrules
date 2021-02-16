@@ -7,30 +7,13 @@ const find = (req, res, next) => {
     // If a query string ?publicAddress=... is given, then filter results
     console.log('finding publicAddress');
     console.log(req.query.publicAddress);
-    let userID = publicAddress;
-    let typingPattern = req.body.tp1;
-    let options = req.body.options;
-    let callback = req.body.callback;
-    //calls the typing dna class to enroll the user
-	const TypingDNA = new TypingDNAClient(process.env.TYPINGDNA_KEY, process.env.TYPINGDNA_SECRET, '192.168.1.102');
-    const typingResult = TypingDNA.auto(
-        userId,
-        typingPattern,
-        options,
-        callback
-    );
-	
-		if (typingResult.result == 1) {
-			return User.find({ publicAddress: req.query.publicAddress })
-        .then((users) => res.json(users))
-        .catch(next);
-		} else {
-			return res.json({
-				patternMatch: 'false'
-			})
-		}
+    let publicAddress = req.query.publicAddress
+    
+    
     
 		
+	return User.find({ publicAddress: req.query.publicAddress }).then((users => res.json(users))).catch(next)
+
 };
 
 const get = (req, res, next) => {
@@ -44,6 +27,21 @@ const get = (req, res, next) => {
         .then((user) => res.json(user))
         .catch(next);
 };
+
+const check = async (req, res, next) => {
+    let typingPattern = req.body.tp1;
+    let options = req.body.options;
+    let callback = req.body.callback;
+    let userID = req.body.publicAddress;
+    const TypingDNA = new TypingDNAClient(process.env.TYPINGDNA_KEY, process.env.TYPINGDNA_SECRET, '192.168.1.102');
+    const typingResult = TypingDNA.auto(
+        userID,
+        typingPattern,
+        options,
+        callback
+    );
+    return res.send(typingResult.result)
+}
 
 const create = async (req, res, next) => {
     let name = req.body.name;
