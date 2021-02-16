@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import DeedCard from '../components/DeedCard';
+import { navigate } from '@reach/router';
 
 function UserStatus() {
   const [loading, setLoading] = useState(true);
@@ -40,7 +41,11 @@ function UserStatus() {
             <div> Loading </div>
           ) : (
             data.map((deed, index) => (
-              <DeedCard deed={deed} onClick={() => console.log('Navigate them to the deed page')} />
+              <DeedCard
+                deed={deed}
+                onClick={() => console.log('Navigate them to the deed page')}
+                onClick={() => navigate(`/deed/${index}`)}
+              />
             ))
           )}
         </div>
