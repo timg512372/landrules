@@ -70,8 +70,8 @@ function Form() {
                             display: 'flex',
                             flexDirection: 'row',
                             justifyContent: 'center',
-                            alignItems: 'space-between',
-                            width: '94vw',
+                            
+                            width: '100vw',
                             height: '75vh',
                         }}
                     >
@@ -79,6 +79,8 @@ function Form() {
                         style={{
                             
                             zIndex: '0',
+                            display: 'flex',
+                            justifyContent: 'center'
                         
                         }}>
 
@@ -92,7 +94,7 @@ function Form() {
                             
                             }}
                         >
-                            <svg width="500" height="700" viewBox="0 0 702 709" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <svg width="480" height="750" viewBox="0 0 702 709" fill="none" xmlns="http://www.w3.org/2000/svg">
                             <g filter="url(#filter0_bd)">
                             <rect x="4.58215" y="0.589722" width="693.418" height="766.41" rx="51" fill="white"/>
                             </g>
@@ -162,7 +164,8 @@ function Form() {
                                 flexDirection: 'column',
                                 alignItems: 'center',
                                 padding: '',
-                                marginTop:'3vh'
+                                marginTop:'3vh',
+                                marginRight:'-10%'
                             }}
                         >
                             <div style={{ fontSize: '20px', marginBottom: '1vh' }}>
