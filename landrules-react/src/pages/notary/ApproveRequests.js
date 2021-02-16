@@ -20,7 +20,7 @@ function ApproveRequests() {
     getData();
   });
 
-  const approveRequest = async (status, deedId) => {
+  const setStatus = async (status, deedId) => {
     await axios.post(`${process.env.REACT_APP_SERVER_URL}/api/deed/setStatus`, {
       status,
       deedId,
@@ -52,7 +52,8 @@ function ApproveRequests() {
                 admin
                 deed={deed}
                 onClick={() => navigate(`/deed/${index}`)}
-                onConfirm={() => approveRequest('C', deed.deedId)}
+                onConfirm={() => setStatus('C', deed.deedId)}
+                onDeny={() => setStatus('R', deed.deedId)}
               />
             ))
           )}
