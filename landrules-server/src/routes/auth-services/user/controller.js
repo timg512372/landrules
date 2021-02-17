@@ -10,7 +10,7 @@ const find = (req, res, next) => {
     console.log('finding publicAddress');
     console.log(req.query.publicAddress);
     let publicAddress = req.query.publicAddress
-	return User.find({ publicAddress: req.query.publicAddress }).then((users => res.json(users))).catch(next)
+	return User.find({ publicAddress: publicAddress }).then((users => res.json(users))).catch(next)
 
 };
 

@@ -3,7 +3,10 @@ import { Button, Link, Input } from 'antd';
 import Web3 from 'web3';
 import axios from 'axios';
 import Register from './Register.js'
+import '../typingdna.js'
 //import { Auth } from '../types';
+
+const TypingDNA = window.TypingDNA
 
 let web3 = undefined; // Will hold the web3 instance
 // import { BrowserRouter as Router, Switch, Route, Link } from 'react-router-dom';
@@ -14,7 +17,6 @@ function Login(props) {
     const [password, setPassword] = useState('');
     const [loading, setLoading] = useState(true);
     const [goToReg, setGoToReg] = useState(false);
-    const[typing, setTyping] = useState('');
 
     function handleAuthenticate(publicAddress, signature) {
         console.log("Handling auth")
@@ -34,7 +36,7 @@ function Login(props) {
 
     async function handleLogin() {
         console.log(props)
-        const { onLoggedIn, auth, onIsRegulator, isRegulator} = props;
+        const { onLoggedIn, auth, onIsNotary, isNotary} = props;
         console.log('handling login');
         // Check if MetaMask is installed
         if (!window.ethereum) {
@@ -81,8 +83,7 @@ function Login(props) {
                 console.log(onLoggedIn)
                 await onLoggedIn(auth)
                 console.log(data[0])
-                console.log(data[0].supplyChainRole)
-                await onIsRegulator(isRegulator, data[0].supplyChainRole)
+                await onIsNotary(isNotary, data[0].role)
                 
             } catch (err) {
                 await setLoading(false)
@@ -90,21 +91,6 @@ function Login(props) {
             }
             
         }
-
-            //.then((response) => response)
-            // If yes, retrieve it. If no, create it.
-            //.then((users) => (users ? users[0] : setGoToReg(true)
-            //))
-            // Popup MetaMask confirmation modal to sign message
-            //.then((user) => handleSignMessage(user.publicAddress, user.nonce))
-            // Send signature to backend on the /auth route
-            //.then(handleAuthenticate)
-            // Pass accessToken back to parent component (to save it in localStorage)
-            //.then(onLoggedIn)
-            //.catch((err) => {
-                //window.alert(err);
-                //setLoading(false);
-            //});
     }
 
     async function initialValidation() {
@@ -149,6 +135,15 @@ function Login(props) {
 			method: 'POST',
 		}).then((response) => response.json());
 	};
+
+    function typingPattern() {
+        console.log(TypingDNA)
+        //var tdna = new TypingDNA();
+        //var typingPattern = tdna.getTypingPattern({type:0});
+        //console.log(typingPattern)
+        
+
+    }
     
 
     //change the UI
@@ -248,7 +243,7 @@ function Login(props) {
                             <div style={{ fontSize: "15px", fontWeight:'500' }}>
                             Type: I am logging in with Metamask
                             </div>
-                            <Input onChange={(event) => setTyping(event.target.value)} /> 
+                            <Input onChange={(event) => typingPattern()} /> 
                         </div>
                     
                     <Button

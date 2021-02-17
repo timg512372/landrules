@@ -3,7 +3,7 @@ import { Router } from '@reach/router';
 import UserStatus from './pages/UserStatus.js';
 import ApproveRequests from './pages/notary/ApproveRequests.js';
 import Home from './pages/Home.js';
-import Login from './pages/Login.js';
+import LoginController from './pages/LoginController.js';
 import Register from './pages/Register.js';
 import Form from './pages/Form.js';
 import Deed from './pages/Deed.js';
@@ -17,7 +17,7 @@ const App = () => (
     <NavBar></NavBar>
     <Router>
       <Home path="/" />
-      <Login path="/login" />
+      <LoginController path="/login" />
       <Register path="/register" />
       <Form path="form" />
       <UserStatus path="user-status" />

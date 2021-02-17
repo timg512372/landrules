@@ -1,3 +1,4 @@
+/* eslint-disable */
 /**
  * TypingDNA - Typing Biometrics JavaScript API
  * https://www.typingdna.com/scripts/typingdna.js
