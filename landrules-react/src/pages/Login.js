@@ -3,7 +3,7 @@ import { Button, Link, Input } from 'antd';
 import Web3 from 'web3';
 import axios from 'axios';
 import Register from './Register.js'
-import '../typingdna.js'
+//import '../../public/typingdna.js'
 //import { Auth } from '../types';
 
 const TypingDNA = window.TypingDNA
@@ -17,6 +17,7 @@ function Login(props) {
     const [password, setPassword] = useState('');
     const [loading, setLoading] = useState(true);
     const [goToReg, setGoToReg] = useState(false);
+    const [typingPatt, setTypingPattern] = useState('')
 
     function handleAuthenticate(publicAddress, signature) {
         console.log("Handling auth")
@@ -73,17 +74,30 @@ function Login(props) {
         const {data} = await axios.get(`http://localhost:4000/api/auth/users?publicAddress=${publicAddress}`, {
             headers: { 'Content-Type': 'application/json' },
         })
-        console.log(data)
-        if (!data[0]) {
+        console.log(data.user)
+        if (!data.user[0]) {
             setGoToReg(true)
         } else {
-            const message = await handleSignMessage(data[0].publicAddress, data[0].nonce)
+            const verifyTyping = await axios({
+                method: 'post',
+                url: `http://localhost:4000/api/auth/users/typing`,
+                data: {
+                    tp: typingPatt,
+                    publicAddress: publicAddress
+                }
+            })
+            console.log(verifyTyping)
+            //if (verifyTyping.result == 1) {
+
+            //}
+
+            const message = await handleSignMessage(data.user[0].publicAddress, data.user[0].nonce)
             await handleAuthenticate(message.publicAddress, message.signature)
             try {
                 console.log(onLoggedIn)
                 await onLoggedIn(auth)
                 console.log(data[0])
-                await onIsNotary(isNotary, data[0].role)
+                await onIsNotary(isNotary, data.user[0].role)
                 
             } catch (err) {
                 await setLoading(false)
@@ -138,10 +152,10 @@ function Login(props) {
 
     function typingPattern() {
         console.log(TypingDNA)
-        //var tdna = new TypingDNA();
-        //var typingPattern = tdna.getTypingPattern({type:0});
-        //console.log(typingPattern)
-        
+        var tdna = new TypingDNA();
+        var typingPattern = tdna.getTypingPattern({type:0});
+        console.log(typingPattern)
+        setTypingPattern(typingPattern)
 
     }
     

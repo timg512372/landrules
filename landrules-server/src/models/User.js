@@ -37,6 +37,16 @@ let User = new Schema({
     formID: {
         type: String,
     },
+
+    nonce: {
+        type: Number,
+        allowNull: false,
+        default: function() {
+            console.log("Create default nonce")
+            return Math.floor(Math.random() * 1000000)
+        }
+    }
+    
     // userID: {
     //     type: String,
     // }, Is this necessary??

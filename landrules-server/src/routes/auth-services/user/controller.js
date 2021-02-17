@@ -5,12 +5,14 @@ const TypingDNAClient = require('../../../typingdnaclient.js')
 const User = require('../../../models/User.js');
 const TypingDNA = new TypingDNAClient(process.env.TYPINGDNA_KEY, process.env.TYPINGDNA_SECRET, '192.168.1.102');
 
-const find = (req, res, next) => {
+const find = async (req, res, next) => {
     // If a query string ?publicAddress=... is given, then filter results
     console.log('finding publicAddress');
     console.log(req.query.publicAddress);
     let publicAddress = req.query.publicAddress
-	return User.find({ publicAddress: publicAddress }).then((users => res.json(users))).catch(next)
+    const user = await User.find({publicAddress: publicAddress})
+    console.log(user)
+	return res.status(200).json({user})
 
 };
 
@@ -32,6 +34,7 @@ const get = (req, res, next) => {
     if (req.user.payload.id !== +req.params.userId) {
         return res.status(401).send({ error: 'You can can only access yourself' });
     }
+   
     return User.findByPk(req.params.userId)
         .then((user) => res.json(user))
         .catch(next);
@@ -40,7 +43,6 @@ const get = (req, res, next) => {
 const check = (req, res, next) => {
     let typingPattern = req.body.tp;
     let userID = req.body.publicAddress;
-    let options = req.body.options;
     console.log('checking')
     const typingResult = auto.auto(typingPattern, userID)
     console.log('typing result: ' + typingResult)
@@ -50,7 +52,7 @@ const check = (req, res, next) => {
 
 const create = async (req, res, next) => {
     let name = req.body.name;
-    let publicAddress = req.body.publicAddress;
+    let publicAddress = req.body.publicAddress.toLowerCase();
     let email = req.body.email;
     let role = req.body.role;
     let formID = req.body.formID;
