@@ -16,15 +16,8 @@ const find = async (req, res, next) => {
 
 };
 
-function callback(error, res) {
-    console.log('callback')
-    if (error) {
-        console.log(error)
-        return error;
-    } else {
-        console.log(res)
-        return res;
-    }
+function callback(res) {
+    return res
 }
 
 const get = (req, res, next) => {
@@ -46,7 +39,8 @@ const check = (req, res, next) => {
     console.log('checking')
     const typingResult = auto.auto(typingPattern, userID)
     console.log('typing result: ' + typingResult)
-    return res.status(201).send(typingResult)
+    const result = callback(typingResult)
+    return res.status(201).send(result)
 }
 
 

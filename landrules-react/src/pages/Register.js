@@ -1,8 +1,8 @@
 import React, { useState } from "react";
 import { Button, Tabs, Input, Upload, message } from "antd";
 import Login from "./Login.js";
-//import Web3 from 'web3';
-//import axios from 'axios';
+import WhiteBackground from "../components/WhiteBackground.js"
+const TypingDNA = window.TypingDNA
 
 //import { Auth } from '../types';
 
@@ -11,20 +11,26 @@ let web3 = undefined; // Will hold the web3 instance
 
 function Register() {
   const [name, setName] = useState("");
-  const [address, setAddress] = useState("");
+  const [email, setEmail] = useState("");
   const [metamaskAddress, setMetamaskAddress] = useState("");
   const [toLogin, setToLogin] = useState(false);
   const [role, setRole] = useState("");
+  const [typing1, setTyping1] = useState('')
+  const [typing2, setTyping2] = useState('')
+  const [typing3, setTyping3] = useState('')
 
   function handleSubmit() {
     setToLogin(true);
     console.log("hi");
     fetch(`http://localhost:4000/api/auth/users`, {
       body: JSON.stringify({
-        companyName: name,
+        name: name,
         publicAddress: metamaskAddress,
-        address: address,
+        email: email,
         role: role,
+        tp1: typing1,
+        tp2: typing2,
+        tp3: typing3
       }),
       headers: {
         "Content-Type": "application/json",
@@ -32,7 +38,29 @@ function Register() {
       method: "POST",
     }).then((response) => response.json());
   }
-  //maybe also add helpful links to get people to make metamask acct
+  
+  function typingPattern(num, contentType, content) {
+    console.log(TypingDNA)
+    var tdna = new TypingDNA();
+    var typingPattern = tdna.getTypingPattern({type:0});
+    console.log(typingPattern)
+    if (num == 1) {
+      setTyping1(typingPattern)
+    } else if (num == 2) {
+      setTyping2(typingPattern)
+    } else if (num == 3) {
+      setTyping3(typingPattern)
+    }
+    if (contentType == 'email') {
+      setEmail(content)
+    } else if (contentType == 'name') {
+      setName(content)
+    } else if (contentType == 'role') {
+      setRole(content)
+    }
+  }
+    
+    
 
   return (
     <>
@@ -44,26 +72,37 @@ function Register() {
           style={{
             width: "100vw",
             height: "100vh",
-            backgroundColor: "#E9FFFA",
-
             position: "absolute",
+            margin: "auto",
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'center',
+            flexDirection: 'column',
+            zIndex: '0'
           }}
         >
+            
+            <WhiteBackground />
+          <div
+          style={{
+            position:"absolute",
+            zIndex:'1',
+            marginBottom: '29%'
+          }}
+          >
+          <h1 style={{fontWeight:'700', fontSize: '60px'}}>Register</h1>
+          </div>
+            
+          
           <div
             style={{
-              fontSize: 30,
-
               position: "absolute",
-              zIndex: "0",
-              margin: "auto",
-              top: "50%",
-              left: "50%",
-              marginRight: "-50%",
-              transform: "translate(-50%, -50%)",
+              zIndex: "1",
             }}
           >
+            
             <div
-              className="LogIn"
+              
               style={{
                 display: "flex",
                 alignItems: "center",
@@ -71,36 +110,34 @@ function Register() {
                 flexDirection: "column",
               }}
             >
-              <div style={{ fontSize: "20px", marginTop: "2vh" }}>
-                Company Name
+          
+              <div style={{ fontSize: "15px", marginTop: "2vh" }}>
+                Full Name
               </div>
-              <Input onChange={(event) => setName(event.target.value)} />
+              <Input style={{ borderRadius: '1vw' }} onChange={(event) => typingPattern(1, 'name', event.target.value)} />
 
-              <div style={{ fontSize: "20px", marginTop: "2vh" }}>
-                Supplychain Role
+              <div style={{ fontSize: "15px", marginTop: "2vh" }}>
+                Role
               </div>
-              <Input onChange={(event) => setRole(event.target.value)} />
+              <Input style={{ borderRadius: '1vw' }} onChange={(event) => typingPattern(2, 'role', event.target.value)} />
 
-              <div style={{ fontSize: "20px", marginTop: "2vh" }}>
+              <div style={{ fontSize: "15px", marginTop: "2vh" }}>
                 Metamask Address
               </div>
               <Input
-                onChange={(event) => setMetamaskAddress(event.target.value)}
+                style={{ borderRadius: '1vw' }} onChange={(event) => setMetamaskAddress(event.target.value)}
               />
 
-              <div style={{ fontSize: "20px", marginTop: "2vh" }}>Location</div>
-              <Input onChange={(event) => setAddress(event.target.value)} />
+              <div style={{ fontSize: "15px", marginTop: "2vh" }}>Email</div>
+              <Input style={{ borderRadius: '1vw' }} onChange={(event) => typingPattern(3, 'email', event.target.value)} />
+              
               <Button
                 variant="primary"
                 type="submit"
                 onClick={handleSubmit}
+                className="button button--secondary"
                 style={{
-                  color: "white",
-                  backgroundColor: "#FB8027",
-                  width: "200px",
-                  height: "45px",
-                  fontSize: "25px",
-                  marginTop: "20px",
+                  marginTop: '10%'
                 }}
               >
                 REGISTER

@@ -11,6 +11,12 @@ const auto = (tp, id) => {
     tp : tp,
     }
 
+    function callback(res) {
+        if (res) {
+            return res
+        }
+    }
+
     var options = {
     hostname : base_url,
     port : 443,
@@ -32,15 +38,19 @@ const auto = (tp, id) => {
 
     res.on('end', function() {
         console.log(JSON.parse(responseData));
+        callback(JSON.parse(responseData))
     });
-    });
+    
 
+    });
+    
     req.on('error', function(e) {
     console.error(e);
     });
     req.write(
     querystring.stringify(data)
     );
+    
     req.end();
     return responseData
 }
