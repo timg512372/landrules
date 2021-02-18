@@ -1,32 +1,16 @@
 {
-    "name": "landrules-server",
-    "version": "1.0.0",
-    "description": "",
-    "main": "index.js",
-    "scripts": {
-        "test": "echo \"Error: no test specified\" && exit 1",
-        "start": "node src/server.js",
-        "dev": "nodemon src/server.js",
-        "deploy": "truffle deploy --network goerli"
-    },
-    "author": "",
-    "license": "ISC",
-    "dependencies": {
-        "@anvilco/anvil": "^2.6.0",
-        "@openzeppelin/contracts": "^3.4.0",
-        "@truffle/hdwallet-provider": "^1.2.1",
-        "bn-chai": "^1.0.1",
-        "bn.js": "^5.1.3",
-        "body-parser": "^1.19.0",
-        "chai": "^4.3.0",
-        "dotenv": "^8.2.0",
-        "eth-sig-util": "^3.0.1",
-        "ethereumjs-util": "^6.2.1",
-        "express": "^4.17.1",
-        "js-sha256": "^0.9.0",
-        "jsonwebtoken": "^8.5.1",
-        "mongoose": "^5.11.15",
-        "validator": "^13.5.2",
-        "web3": "^1.3.4"
-    }
+  "dependencies": {
+    "@anvilco/anvil": "^2.6.0",
+    "@truffle/hdwallet-provider": "^1.2.2",
+    "axios": "^0.21.1",
+    "dotenv": "^8.2.0",
+    "eth-sig-util": "^3.0.1",
+    "express": "^4.17.1",
+    "js-sha256": "^0.9.0",
+    "jsonwebtoken": "^8.5.1",
+    "mongoose": "^5.11.17",
+    "truffle": "^5.1.66",
+    "validator": "^13.5.2",
+    "web3": "^1.3.4"
+  }
 }

@@ -85,8 +85,9 @@ function Login(props) {
                     publicAddress: publicAddress
                 }
             })
-            console.log(verifyTyping)
-            if (verifyTyping.result == 1) {
+            console.log("front end typing: " +JSON.stringify(verifyTyping.data))
+            const typingResult = verifyTyping.data
+            if (typingResult.result == 1) {
                 window.alert('Typing pattern matched.')
                 const message = await handleSignMessage(data.user[0].publicAddress, data.user[0].nonce)
                 if (message != null) {
@@ -94,7 +95,7 @@ function Login(props) {
                     try {
                         console.log(onLoggedIn)
                         await onLoggedIn(auth)
-                        console.log(data[0])
+                        console.log(data.user[0])
                         await onIsNotary(isNotary, data.user[0].role)
                         
                     } catch (err) {

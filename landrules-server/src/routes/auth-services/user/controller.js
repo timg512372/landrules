@@ -1,6 +1,6 @@
 const express = require('express');
+const axios = require('axios')
 require('dotenv').config();
-const auto = require('./typingdna.js')
 const TypingDNAClient = require('../../../typingdnaclient.js')
 const User = require('../../../models/User.js');
 const TypingDNA = new TypingDNAClient(process.env.TYPINGDNA_KEY, process.env.TYPINGDNA_SECRET, '192.168.1.102');
@@ -33,14 +33,34 @@ const get = (req, res, next) => {
         .catch(next);
 };
 
-const check = (req, res, next) => {
+const check = async (req, res, next) => {
     let typingPattern = req.body.tp;
     let userID = req.body.publicAddress;
     console.log('checking')
-    const typingResult = auto.auto(typingPattern, userID)
-    console.log('typing result: ' + typingResult)
+    
+    var base_url = 'https://api.typingdna.com';
+    var apiKey = process.env.TYPINGDNA_KEY;
+    var apiSecret = process.env.TYPINGDNA_SECRET;
+    var id = userID;
+    var data = {
+    tp : typingPattern,
+    }
 
-    return res.status(201).send({hi: "hi"})
+    var typingResult = await axios({
+        method: 'post',
+        url: base_url + '/auto/' + id,
+        headers: {
+            'Content-Type': 'application/json',
+            'Cache-Control': 'no-cache',
+            'Authorization': 'Basic ' + new Buffer(apiKey + ':' + apiSecret).toString('base64'),
+        },
+        data: data
+    });
+    
+    const result = typingResult.data
+    console.log(result)
+    
+    return res.status(201).send(result)
 }
 
 
