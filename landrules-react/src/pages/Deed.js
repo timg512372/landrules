@@ -55,7 +55,14 @@ function Deed(props) {
             <h1>{data.name}</h1>
 
             <div style={{ display: 'flex', flexDirection: 'row', justifyContent: 'space-around' }}>
-              <div>
+              <div
+                style={{
+                  display: 'flex',
+                  width: '30vw',
+                  flexDirection: 'column',
+                  marginRight: '5vw',
+                }}
+              >
                 <div>
                   <h2>Deed ID: </h2> {data.deedID}
                 </div>
