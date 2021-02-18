@@ -78,7 +78,10 @@ function Form() {
                 style={{
                   position: 'absolute',
                   zIndex: '-1',
-                  margin: 'auto',
+                  display: 'flex',
+                  alignItems: 'center',
+                  flexDirection: 'column',
+                  
                 }}
               >
                 <WhiteBackground />
