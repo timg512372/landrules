@@ -28,7 +28,7 @@ function UserStatus() {
         <div
           style={{
             width: '90vw',
-            height: '100vh',
+            height: '90vh',
             backgroundColor: 'rgba(73, 194, 104, 0.42)',
             borderTopLeftRadius: '2vw',
             borderTopRightRadius: '2vw',
