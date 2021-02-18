@@ -102,7 +102,9 @@ router.get('/getDeedById', async (req, res) => {
 
 // Needs to be auth locked
 router.post('/newDeed', async (req, res) => {
+    console.log('New Deed');
     const { name, comments, coordinates, json, address } = req.body;
+    console.log(coordinates);
 
     if (!name) {
         return res.status(400).send('Deed name not found');

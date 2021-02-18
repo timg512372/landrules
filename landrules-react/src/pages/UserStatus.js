@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import axios from 'axios';
 import DeedCard from '../components/DeedCard';
 import { navigate } from '@reach/router';
@@ -8,7 +8,9 @@ function UserStatus() {
   const [data, setData] = useState([]);
 
   //end
-  const publicAddress = '0xB1766787e2241578C9df8793b7874d3F3d32acd1'; // Dummy value for now
+  const publicAddress = '0x20E43CAdC9961eDfc61170EeeF66d571C5993DFC'; // Dummy value for now
+
+  const { current: a } = useRef(['a']);
   useEffect(() => {
     const getData = async () => {
       let { data } = await axios.get(
@@ -18,7 +20,7 @@ function UserStatus() {
       setLoading(false);
     };
     getData();
-  });
+  }, [a]);
 
   return (
     <>
@@ -41,11 +43,7 @@ function UserStatus() {
             <div> Loading </div>
           ) : (
             data.map((deed, index) => (
-              <DeedCard
-                deed={deed}
-                onClick={() => console.log('Navigate them to the deed page')}
-                onClick={() => navigate(`/deed/${index}`)}
-              />
+              <DeedCard deed={deed} onClick={() => navigate(`/deed/${deed.deedId}`)} />
             ))
           )}
         </div>

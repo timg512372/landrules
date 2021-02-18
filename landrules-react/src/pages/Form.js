@@ -3,6 +3,7 @@ import axios from 'axios';
 import { Button, Tabs, Input, Upload, message } from 'antd';
 import Login from './Login.js';
 import { MapContainer, TileLayer, Marker, Popup } from 'react-leaflet';
+import { navigate } from '@reach/router';
 
 import MapPicker from '../components/MapPicker';
 
@@ -21,6 +22,7 @@ function Form() {
 
   function handleSubmit() {
     // setToLogin(true);
+    console.log(JSON.stringify(points));
     let json = {
       date: date,
       deedName: deedName,
@@ -30,7 +32,7 @@ function Form() {
       propertyDescription: propertyDescription,
     };
     console.log(process.env.REACT_APP_SERVER_URL);
-    fetch(`${process.env.SERVER_UR}/api/deed/newDeed`, {
+    fetch(`${process.env.REACT_APP_SERVER_URL}/api/deed/newDeed`, {
       body: JSON.stringify({
         name: deedName,
         comments: propertyDescription,
@@ -42,7 +44,10 @@ function Form() {
         'Content-Type': 'application/json',
       },
       method: 'POST',
-    }).then((response) => response.json());
+    }).then((response) => {
+      response.json();
+      navigate(`/user-status`);
+    });
   }
 
   return (

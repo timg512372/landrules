@@ -1,5 +1,6 @@
 import React from 'react';
 import { Button } from 'antd';
+import axios from 'axios';
 
 const DeedCard = (props) => {
   const { admin, deed, onClick, onConfirm, onDeny } = props;
@@ -19,11 +20,20 @@ const DeedCard = (props) => {
         borderRadius: '4vw',
         padding: '0 2vw 0 2vw',
       }}
-      onClick={onClick}
     >
       <div>{deed.deedId}</div>
-      <div>{deed.name}</div>
-      <div>{deed.coordinates}</div>
+      <div style={{ width: '15vw', textAlign: 'center' }}>{deed.name}</div>
+      <Button
+        type="link"
+        onClick={() =>
+          window.open(
+            `${process.env.REACT_APP_SERVER_URL}/api/deed/pdf?deedId=${deed.deedId}`,
+            '_blank'
+          )
+        }
+      >
+        Get PDF
+      </Button>
       {admin ? (
         <div>
           <Button onClick={onConfirm} disabled={deed.status != 'P'}>
@@ -34,8 +44,11 @@ const DeedCard = (props) => {
           </Button>
         </div>
       ) : (
-        <div> {statusWord[deed.status]} </div>
+        <div style={{ width: '7vw', textAlign: 'center' }}>{statusWord[deed.status]}</div>
       )}
+      <Button type="link" onClick={onClick}>
+        More Details
+      </Button>
     </div>
   );
 };
