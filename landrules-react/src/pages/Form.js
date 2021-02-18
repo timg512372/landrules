@@ -3,7 +3,7 @@ import axios from 'axios';
 import { Button, Tabs, Input, Upload, message } from 'antd';
 import Login from './Login.js';
 import { MapContainer, TileLayer, Marker, Popup } from 'react-leaflet';
-import WhiteBackground from '../components/WhiteBackground.js'
+import WhiteBackground from '../components/WhiteBackground.js';
 import { navigate } from '@reach/router';
 
 import MapPicker from '../components/MapPicker';
@@ -24,11 +24,24 @@ function Form() {
     // setToLogin(true);
     console.log(JSON.stringify(points));
     let json = {
-      deedName: deedName,
-      granteeName: granteeName,
-      granteePhone: granteePhone,
-      address: address,
-      propertyDescription: propertyDescription,
+      title: deedName,
+      data: [
+        {
+          label: 'Granting',
+          content: `This deed is granted by the granter${granteeName}, whose mailing address is ${address}, 
+        to the grantee, who is the legal owner of ${address}`,
+        },
+        {
+          label: 'Description',
+          content: propertyDescription,
+        },
+        {
+          label: 'Location',
+          content: `This property may be bounded at the following coordinates: ${JSON.stringify(
+            points
+          )}`,
+        },
+      ],
     };
     console.log(process.env.REACT_APP_SERVER_URL);
     fetch(`${process.env.REACT_APP_SERVER_URL}/api/deed/newDeed`, {
@@ -55,8 +68,10 @@ function Form() {
       {toLogin === true ? (
         <Login />
       ) : (
-        <div className= "form">
-          <div style={{ fontSize: '40px', marginBottom: '2vh', fontWeight: '700' }}>Create a Deed</div>
+        <div className="form">
+          <div style={{ fontSize: '40px', marginBottom: '2vh', fontWeight: '700' }}>
+            Create a Deed
+          </div>
           <div className="contents-align">
             <div className="form-display">
               <div
@@ -64,7 +79,6 @@ function Form() {
                   position: 'absolute',
                   zIndex: '-1',
                   margin: 'auto',
-                 
                 }}
               >
                 <WhiteBackground />
@@ -78,13 +92,12 @@ function Form() {
                   width: '30vw',
                   height: '100%',
                   padding: '0 5vw 0 5vw',
-                  marginTop: '20vh'
+                  marginTop: '20vh',
                 }}
               >
-
                 <div style={{ fontSize: '15px', marginTop: '2vh' }}>Deed Name</div>
                 <Input
-                  style={{ borderRadius: '1vw' , size: 'small'}}
+                  style={{ borderRadius: '1vw', size: 'small' }}
                   onChange={(event) => setDeedName(event.target.value)}
                 />
 
@@ -95,13 +108,13 @@ function Form() {
                   multiple
                 />
 
-                <div style={{ fontSize: '15px', marginTop: '2vh' }}>Grantee Phone Number</div>
+                <div style={{ fontSize: '15px', marginTop: '2vh' }}>Grantee Mailing Address</div>
                 <Input
                   style={{ borderRadius: '1vw', size: 'small' }}
                   onChange={(event) => setGranteePhone(event.target.value)}
                 />
 
-                <div style={{ fontSize: '15px', marginTop: '2vh' }}>Address</div>
+                <div style={{ fontSize: '15px', marginTop: '2vh' }}>Metamask Address</div>
                 <Input
                   style={{ borderRadius: '1vw', size: 'small' }}
                   onChange={(event) => setAddress(event.target.value)}
