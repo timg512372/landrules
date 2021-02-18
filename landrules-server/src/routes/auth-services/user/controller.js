@@ -55,12 +55,44 @@ const check = async (req, res, next) => {
             'Authorization': 'Basic ' + new Buffer(apiKey + ':' + apiSecret).toString('base64'),
         },
         data: data
-    });
+    }).catch(console.log);
     
     const result = typingResult.data
     console.log(result)
     
     return res.status(201).send(result)
+}
+
+var typingResult =  async (tp, _callback, userId) => {
+    var base_url = 'https://api.typingdna.com';
+    var apiKey = process.env.TYPINGDNA_KEY;
+    var apiSecret = process.env.TYPINGDNA_SECRET;
+    var id = userId;
+    var data = {
+        tp : tp,
+        }
+    var getTyping = await axios({
+        method: 'post',
+        url: base_url + '/auto/' + id,
+        headers: {
+            'Content-Type': 'application/json',
+            'Cache-Control': 'no-cache',
+            'Authorization': 'Basic ' + new Buffer(apiKey + ':' + apiSecret).toString('base64'),
+        },
+        data: data
+    }).then( await  wait(10000));
+    const result = getTyping
+    _callback()
+    return result.data
+
+}
+
+var callback = ()  => {
+    return true
+}
+
+function wait(ms) {
+    return new Promise( (resolve) => {setTimeout(resolve, ms)});
 }
 
 
@@ -97,35 +129,14 @@ const create = async (req, res, next) => {
     //let saveUser1 = TypingDNA.auto(userId, typingPattern1, options, callback);
     //let saveUser2 = TypingDNA.auto(userId, typingPattern2, options, callback);
     //let saveUser3 = TypingDNA.auto(userId, typingPattern3, options, callback);
-    var base_url = 'https://api.typingdna.com';
-    var apiKey = process.env.TYPINGDNA_KEY;
-    var apiSecret = process.env.TYPINGDNA_SECRET;
-    var id = userId;
 
-    var typingResult =  async (tp) => {
-        var data = {
-            tp : tp,
-            }
-        var getTyping = await axios({
-            method: 'post',
-            url: base_url + '/auto/' + id,
-            headers: {
-                'Content-Type': 'application/json',
-                'Cache-Control': 'no-cache',
-                'Authorization': 'Basic ' + new Buffer(apiKey + ':' + apiSecret).toString('base64'),
-            },
-            data: data
-        });
-        const result = getTyping
-        return result.data
-
-    }
     
-    let saveUser1 = await typingResult(typingPattern1)
+    
+    let saveUser1 = await typingResult(typingPattern1, callback, userId)
     console.log(saveUser1)
-    let saveUser2 = await typingResult(typingPattern2)
+    let saveUser2 = await typingResult(typingPattern2, callback, userId)
     console.log(saveUser2)
-    let saveUser3 = await typingResult(typingPattern3)
+    let saveUser3 = await typingResult(typingPattern3, callback, userId)
     console.log(saveUser3)
     console.log('user created');
 	return "user created"

@@ -4,6 +4,8 @@ import Web3 from 'web3';
 import axios from 'axios';
 import Register from './Register.js'
 import LoginBack from '../components/LoginBack.js'
+import ApproveRequests from './notary/ApproveRequests.js'
+import Form from './Form.js'
 
 const TypingDNA = window.TypingDNA
 
@@ -17,6 +19,25 @@ function Login(props) {
     const [loading, setLoading] = useState(true);
     const [goToReg, setGoToReg] = useState(false);
     const [typingPatt, setTypingPattern] = useState('')
+    const [authState, setAuthState] = useState(false);
+	const [isNotary, setIsNotary] = useState(false);
+
+	useEffect (()  => {
+		setAuthState(false);
+	}, [])
+
+    function handleIsNotary(isNotary, role) {
+		console.log("checking if it is regulator")
+		if (role == "Official") {
+			setIsNotary({role})
+			console.log(authState)
+		} 
+	}
+
+	function handleLoggedIn(auth) {
+		console.log("handleLoggedIn")
+		setAuthState({auth});
+	};
 
     function handleAuthenticate(publicAddress, signature) {
         console.log("Handling auth")
@@ -35,8 +56,7 @@ function Login(props) {
     }
 
     async function handleLogin() {
-        console.log(props)
-        const { onLoggedIn, auth, onIsNotary, isNotary} = props;
+
         console.log('handling login');
         // Check if MetaMask is installed
         if (!window.ethereum) {
@@ -68,6 +88,7 @@ function Login(props) {
         const publicAddress = coinbase.toLowerCase();
         console.log(publicAddress);
         setLoading(true);
+        console.log(process.env.REACT_APP_SERVER_URL)
 
         // Look if user with current publicAddress is already present on backend
         const {data} = await axios.get(process.env.REACT_APP_SERVER_URL +`/api/auth/users?publicAddress=${publicAddress}`, {
@@ -93,10 +114,10 @@ function Login(props) {
                 if (message != null) {
                     await handleAuthenticate(message.publicAddress, message.signature)
                     try {
-                        console.log(onLoggedIn)
-                        await onLoggedIn(auth)
-                        console.log(data.user[0])
-                        await onIsNotary(isNotary, data.user[0].role)
+                        //console.log(onLoggedIn)
+                        await handleLoggedIn(authState)
+                        //console.log(data.user[0])
+                        await handleIsNotary(isNotary, data.user[0].role)
                         
                     } catch (err) {
                         await setLoading(false)
@@ -171,7 +192,19 @@ function Login(props) {
     {
         goToReg === true ? (
             <Register />
+        ) : ( 
+
+            authState ? (
+					
+                isNotary ? (
+                    <ApproveRequests />
+                ) : (
+                    <Form />
+                )
+            
+            
         ) : (
+
             <div
             style={{
                 width: '100vw',
@@ -247,6 +280,7 @@ function Login(props) {
                 </div>
             
         </div>
+        )
         )
     } </>
        
