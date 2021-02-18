@@ -47,9 +47,10 @@ router.get('/getDeedByOwner', async (req, res) => {
 
     const { web3, contractInstance } = initializeWeb3();
     let deeds = [];
+    console.log('getting deeds');
     try {
         let deedArray = await contractInstance.methods.getDeedByOwner(address).call();
-        console.log(deedArray);
+
         let promises = deedArray.map(async (deedId) => {
             let sc = await contractInstance.methods.deedArray(deedId).call();
             let db = await Deed.findOne({ deedId });

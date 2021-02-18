@@ -20,7 +20,7 @@ function UserStatus() {
       setLoading(false);
     };
     getData();
-  }, [a]);
+  });
 
   return (
     <>

@@ -64,7 +64,7 @@ function Deed(props) {
                 }}
               >
                 <div>
-                  <h2>Deed ID: </h2> {data.deedID}
+                  <h2>Deed ID: {params.id} </h2>
                 </div>
 
                 <div>

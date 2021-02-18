@@ -61,12 +61,12 @@ const Navbar = () => {
 
         <div className="nav-item--stretch" />
 
-        <MenuItem to="/form">Form</MenuItem>
+        {/* <MenuItem to="/form">Form</MenuItem> */}
         <MenuItem to="/register">Register</MenuItem>
         <MenuItem to="/login">Login</MenuItem>
       </nav>
     </header>
   );
-}
+};
 
 export default Navbar;
