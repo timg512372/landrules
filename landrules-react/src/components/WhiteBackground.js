@@ -5,9 +5,10 @@ const WhiteBackground = () => (
     <svg
     position='absolute'
     z-index='-1'
-      width="390"
+    width="390"
       height="700"
       viewBox="0 0 702 709"
+     
       fill="none"
       xmlns="http://www.w3.org/2000/svg"
     >
