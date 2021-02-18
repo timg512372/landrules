@@ -3,11 +3,8 @@ import axios from 'axios';
 import { Button, Tabs, Input, Upload, message } from 'antd';
 import Login from './Login.js';
 import { MapContainer, TileLayer, Marker, Popup } from 'react-leaflet';
-<<<<<<< HEAD
 import WhiteBackground from '../components/WhiteBackground.js'
-=======
 import { navigate } from '@reach/router';
->>>>>>> 51083dabb02f677e39dbf255fe9267c71f5a8e1e
 
 import MapPicker from '../components/MapPicker';
 
