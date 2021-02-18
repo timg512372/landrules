@@ -17,7 +17,8 @@ router.route('/').get(controller.find);
 //router.route('/:userId').get(jwt(config), controller.get);
 
 /** POST api/users/typing */
-router.route('/typing').post(controller.check);
+//router.route('/typing').post(controller.check);
+router.post('/typing', controller.check)
 
 /** POST /api/users */
 router.route('/').post(controller.create);

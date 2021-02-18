@@ -1,23 +1,25 @@
 require('dotenv').config();
-const auto = (tp, id) => {
+const  auto = async (tp, id) => {
     var https = require('https');
     var querystring = require('querystring');
-
-    var base_url = 'api.typingdna.com';
+    var base_url = 'https://api.typingdna.com/';
     var apiKey = process.env.TYPINGDNA_KEY;
     var apiSecret = process.env.TYPINGDNA_SECRET;
     var id = id;
     var data = {
     tp : tp,
     }
+  
 
-    function callback(res) {
-        if (res) {
-            return res
+    function callback(responseData, res) {
+        console.log('calling back weewooweewoo')
+        console.log("responseData: " + responseData)
+        if (responseData) {
+            res.status(200).send(responseData)
         }
     }
-
-    var options = {
+    
+     var options = {
     hostname : base_url,
     port : 443,
     path : '/auto/' + id,
@@ -38,7 +40,7 @@ const auto = (tp, id) => {
 
     res.on('end', function() {
         console.log(JSON.parse(responseData));
-        callback(JSON.parse(responseData))
+        callback(JSON.parse(responseData), res)
     });
     
 
@@ -53,6 +55,9 @@ const auto = (tp, id) => {
     
     req.end();
     return responseData
+    
+
+   
 }
 
 module.exports = {auto}

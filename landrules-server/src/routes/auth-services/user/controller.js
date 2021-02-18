@@ -39,8 +39,8 @@ const check = (req, res, next) => {
     console.log('checking')
     const typingResult = auto.auto(typingPattern, userID)
     console.log('typing result: ' + typingResult)
-    const result = callback(typingResult)
-    return res.status(201).send(result)
+
+    return res.status(201).send({hi: "hi"})
 }
 
 
