@@ -23,7 +23,7 @@ function Login(props) {
         if (goToReg) {
             console.log("going to registration")
         } else {
-            fetch(`http://localhost:4000/api/auth`, {
+            fetch(process.env.REACT_APP_SERVER_URL + `/api/auth`, {
                 //change
                 body: JSON.stringify({ publicAddress, signature }),
                 headers: {
@@ -70,7 +70,7 @@ function Login(props) {
         setLoading(true);
 
         // Look if user with current publicAddress is already present on backend
-        const {data} = await axios.get(`http://localhost:4000/api/auth/users?publicAddress=${publicAddress}`, {
+        const {data} = await axios.get(process.env.REACT_APP_SERVER_URL +`/api/auth/users?publicAddress=${publicAddress}`, {
             headers: { 'Content-Type': 'application/json' },
         })
         console.log(data.user)
@@ -79,7 +79,7 @@ function Login(props) {
         } else {
             const verifyTyping = await axios({
                 method: 'post',
-                url: `http://localhost:4000/api/auth/users/typing`,
+                url: process.env.REACT_APP_SERVER_URL + `/api/auth/users/typing`,
                 data: {
                     tp: typingPatt,
                     publicAddress: publicAddress
@@ -147,7 +147,7 @@ function Login(props) {
     
     function handleSignUp(publicAddress) {
         console.log(publicAddress)
-		return fetch(`http://localhost:4000/api/auth/users`, {
+		return fetch(process.env.REACT_APP_SERVER_URL +`/api/auth/users`, {
 			body: JSON.stringify({ publicAddress }),
 			headers: {
 				'Content-Type': 'application/json',

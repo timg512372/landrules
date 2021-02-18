@@ -11,7 +11,7 @@ const find = async (req, res, next) => {
     console.log(req.query.publicAddress);
     let publicAddress = req.query.publicAddress
     const user = await User.find({publicAddress: publicAddress})
-    console.log(user)
+    console.log('user' + user)
 	return res.status(200).json({user})
 
 };
@@ -97,11 +97,35 @@ const create = async (req, res, next) => {
     //let saveUser1 = TypingDNA.auto(userId, typingPattern1, options, callback);
     //let saveUser2 = TypingDNA.auto(userId, typingPattern2, options, callback);
     //let saveUser3 = TypingDNA.auto(userId, typingPattern3, options, callback);
-    let saveUser1 = auto.auto(typingPattern1, userId)
+    var base_url = 'https://api.typingdna.com';
+    var apiKey = process.env.TYPINGDNA_KEY;
+    var apiSecret = process.env.TYPINGDNA_SECRET;
+    var id = userId;
+
+    var typingResult =  async (tp) => {
+        var data = {
+            tp : tp,
+            }
+        var getTyping = await axios({
+            method: 'post',
+            url: base_url + '/auto/' + id,
+            headers: {
+                'Content-Type': 'application/json',
+                'Cache-Control': 'no-cache',
+                'Authorization': 'Basic ' + new Buffer(apiKey + ':' + apiSecret).toString('base64'),
+            },
+            data: data
+        });
+        const result = getTyping
+        return result.data
+
+    }
+    
+    let saveUser1 = await typingResult(typingPattern1)
     console.log(saveUser1)
-    let saveUser2 = auto.auto(typingPattern2, userId)
+    let saveUser2 = await typingResult(typingPattern2)
     console.log(saveUser2)
-    let saveUser3 = auto.auto(typingPattern3, userId)
+    let saveUser3 = await typingResult(typingPattern3)
     console.log(saveUser3)
     console.log('user created');
 	return "user created"

@@ -22,7 +22,7 @@ function Register() {
   function handleSubmit() {
     setToLogin(true);
     console.log("hi");
-    fetch(`http://localhost:4000/api/auth/users`, {
+    fetch(process.env.REACT_APP_SERVER_URL + `/api/auth/users`, {
       body: JSON.stringify({
         name: name,
         publicAddress: metamaskAddress,
