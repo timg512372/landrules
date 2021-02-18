@@ -80,7 +80,7 @@ var typingResult =  async (tp, _callback, userId) => {
             'Authorization': 'Basic ' + new Buffer(apiKey + ':' + apiSecret).toString('base64'),
         },
         data: data
-    }).then( await  wait(10000));
+    }).then( await  wait(3000));
     const result = getTyping
     _callback()
     return result.data
