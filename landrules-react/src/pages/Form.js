@@ -178,13 +178,7 @@ function Form() {
             variant="primary"
             type="submit"
             onClick={handleSubmit}
-            style={{
-              color: 'white',
-              backgroundColor: '#FB8027',
-              width: '200px',
-              height: '45px',
-              fontSize: '25px',
-            }}
+            className="button button--secondary"
           >
             APPLY
           </Button>

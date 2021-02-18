@@ -87,7 +87,8 @@ function Register() {
           style={{
             position:"absolute",
             zIndex:'1',
-            marginBottom: '29%'
+            marginBottom:'390px'
+            
           }}
           >
           <h1 style={{fontWeight:'700', fontSize: '60px'}}>Register</h1>
